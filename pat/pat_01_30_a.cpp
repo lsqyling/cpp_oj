@@ -438,7 +438,7 @@ void entry()
 
 namespace pat_a1010 {
 constexpr int N = 15;
-constexpr long INF = 0x7f'ff'ff'ff'ff'ff'ff'ffL;
+constexpr long long INF = 0x7f'ff'ff'ff'ff'ff'ff'ffL;
 
 long equationOfX(char *str, long radix, long bound)
 {

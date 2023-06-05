@@ -5,6 +5,7 @@
 #include <cmath>
 #include <string>
 #include <iostream>
+#include <map>
 
 namespace basic_31 {
 const int WEIGHTS[17] = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
@@ -634,12 +635,167 @@ void entry()
 }
 
 namespace basic_44 {
+const char *ones_digits[13] =
+        {"tret", "jan", "feb", "mar", "apr", "may", "jun", "jly", "aug", "sep", "oct", "nov", "dec"};
+const char *tens_digits[13] =
+        {"", "tam", "hel", "maa", "huh", "tou", "kes", "hei", "elo", "syy", "lok", "mer", "jou"};
+const std::map<std::string, int> mars_ones_num = {
+        {"tret", 0}, {"jan", 1}, {"feb", 2}, {"mar", 3},
+        {"apr", 4}, {"may", 5}, {"jun", 6}, {"jly", 7},
+        {"aug", 8}, {"sep", 9}, {"oct", 10}, {"nov", 11},
+        {"dec", 12}};
+const std::map<std::string, int> mars_tens_num = {
+        {"tam", 1}, {"hel", 2}, {"maa", 3},
+        {"huh", 4}, {"tou", 5}, {"kes", 6},
+        {"hei", 7}, {"elo", 8}, {"syy", 9},
+        {"lok", 10}, {"mer", 11}, {"jou", 12}};
+
+int digits[5], len = 0;
+
+void conversion_of(int n, int radix)
+{
+    len = 0;
+    do
+    {
+        digits[len++] = n % radix;
+        n /= radix;
+    } while (n);
+}
+
+void print_mars()
+{
+    if (len > 1 && digits[0] != 0)
+        printf("%s %s\n", tens_digits[digits[1]], ones_digits[digits[0]]);
+    else if (len == 2 && digits[0] == 0)
+        printf("%s\n", tens_digits[digits[1]]);
+    else
+        printf("%s\n", ones_digits[digits[0]]);
+}
+
+int conversion_ten_nums(int radix)
+{
+    int sum = 0;
+    for (int i = 0; i < len; ++i)
+    {
+        sum = sum * radix + digits[i];
+    }
+    return sum;
+}
+
+std::vector<std::string> split(char str[], const char *delim)
+{
+    std::vector<std::string> res;
+    char *s = strtok(str, delim);
+    while (s != NULL)
+    {
+        res.emplace_back(s);
+        s = strtok(NULL, delim);
+    }
+    return res;
+}
 
 
 
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    getchar();
+    char line[10];
+    for (int i = 0; i < n; ++i)
+    {
+        fgets(line, sizeof(line), stdin);
+        int size = strlen(line);
+        if (line[size-1] == '\n')
+            line[size-1] = '\0';
+
+        auto words = split(line, " ");
+        if ('0' <= words[0][0] && words[0][0] <= '9')
+        {
+            int t = std::stoi(words[0]);
+            conversion_of(t, 13);
+            print_mars();
+        }
+        else if ('a' <= words[0][0] && words[0][0] <= 'z')
+        {
+            if (words.size() == 2)
+            {
+                len = 0;
+                digits[len++] = mars_tens_num.at(words[0]);
+                digits[len++] = mars_ones_num.at(words[1]);
+                printf("%d\n", conversion_ten_nums(13));
+            }
+            else if (words.size() == 1)
+            {
+                len = 0;
+                auto it = mars_tens_num.find(words[0]);
+                if (it != mars_tens_num.end())
+                {
+                    digits[len++] = mars_tens_num.at(words[0]);
+                    digits[len++] = 0;
+                }
+                else
+                {
+                    digits[len++] = mars_ones_num.at(words[0]);
+                }
+
+                printf("%d\n", conversion_ten_nums(13));
+            }
+        }
+    }
+}
+}
+
+namespace basic_45 {
+constexpr int N = 100'005;
+constexpr int INF = 0x3fff'ffff;
+
+int seq[N];
+int left_max[N], right_min[N];
+int pivots[N], len = 0;
+
+void dp_left_right(int n)
+{
+    left_max[0] = 0;
+    for (int i = 1; i < n; ++i)
+    {
+        left_max[i] = std::max(left_max[i-1], seq[i-1]);
+    }
+    right_min[n-1] = INF;
+    for (int j = n - 2; j >= 0; --j)
+    {
+        right_min[j] = std::min(right_min[j+1], seq[j+1]);
+    }
+}
 
 
 
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d", &seq[i]);
+    }
+    dp_left_right(n);
+    for (int j = 0; j < n; ++j)
+    {
+        if (left_max[j] < seq[j] && seq[j] < right_min[j])
+            pivots[len++] = seq[j];
+    }
+    printf("%d\n", len);
+    for (int k = 0; k < len; ++k)
+    {
+        printf("%d", pivots[k]);
+        if (k < len - 1)
+            printf(" ");
+    }
+    printf("\n");
+}
+}
+
+namespace basic_46 {
 
 
 
@@ -654,24 +810,25 @@ namespace basic_44 {
 
 
 
+void test_all()
+{
+    basic_31::entry();
+    basic_32::entry();
+    basic_33::entry();
+    basic_34::entry();
+    basic_35::entry();
+    basic_36::entry();
+    basic_37::entry();
+    basic_38::entry();
+    basic_39::entry();
+    basic_40::entry();
+    basic_41::entry();
+    basic_42::entry();
+    basic_43::entry();
+    basic_44::entry();
+    basic_45::entry();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
@@ -681,18 +838,5 @@ namespace basic_44 {
 
 int main(int argc, char **argv)
 {
-//    basic_31::entry();
-//    basic_32::entry();
-//    basic_33::entry();
-//    basic_34::entry();
-//    basic_35::entry();
-//    basic_36::entry();
-//    basic_37::entry();
-//    basic_38::entry();
-//    basic_39::entry();
-//    basic_40::entry();
-//    basic_41::entry();
-//    basic_42::entry();
-    basic_43::entry();
     return 0;
 }
