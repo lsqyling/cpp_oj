@@ -440,10 +440,10 @@ namespace pat_a1010 {
 constexpr int N = 15;
 constexpr long long INF = 0x7f'ff'ff'ff'ff'ff'ff'ffL;
 
-long equationOfX(char *str, long radix, long bound)
+long long equationOfX(char *str, long long radix, long long bound)
 {
     int len = strlen(str);
-    long s = 0;
+    long long s = 0;
     for (int i = 0; i < len; ++i)
     {
         if ('0' <= str[i] && str[i] <= '9')
@@ -459,18 +459,18 @@ long equationOfX(char *str, long radix, long bound)
     return s;
 }
 
-int cmp(char str_n2[], long radix, long t)
+int cmp(char str_n2[], long long radix, long long t)
 {
-    long n2 = equationOfX(str_n2, radix, t);
+    long long n2 = equationOfX(str_n2, radix, t);
     if (n2 < 0) return 1;
     if (t > n2) return -1;
     else if (t == n2) return 0;
     else return 1;
 }
 
-int binarySearch(char str_n2[], long left, long right, long t)
+int binarySearch(char str_n2[], long long left, long long right, long long t)
 {
-    long mid;
+    long long mid;
     while (left <= right)
     {
         mid = left + (right - left) / 2;
@@ -503,12 +503,12 @@ void entry()
     {
         std::swap(str_n1, str_n2);
     }
-    long n1 = equationOfX(str_n1, radix, INF);
-    long left = findLargestDigit(str_n2);
-    long right = std::max(left, n1) + 1;
-    long ans = binarySearch(str_n2, left, right, n1);
+    long long n1 = equationOfX(str_n1, radix, INF);
+    long long left = findLargestDigit(str_n2);
+    long long right = std::max(left, n1) + 1;
+    long long ans = binarySearch(str_n2, left, right, n1);
     if (ans == -1) printf("Impossible");
-    else printf("%ld", ans);
+    else printf("%lld", ans);
 }
 }
 

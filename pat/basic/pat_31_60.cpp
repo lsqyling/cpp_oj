@@ -797,38 +797,212 @@ void entry()
 
 namespace basic_46 {
 
-
-
-
-
-
-
-
-}
-
-
-
-
-
-void test_all()
+void entry()
 {
-    basic_31::entry();
-    basic_32::entry();
-    basic_33::entry();
-    basic_34::entry();
-    basic_35::entry();
-    basic_36::entry();
-    basic_37::entry();
-    basic_38::entry();
-    basic_39::entry();
-    basic_40::entry();
-    basic_41::entry();
-    basic_42::entry();
-    basic_43::entry();
-    basic_44::entry();
-    basic_45::entry();
+    int n;
+    scanf("%d", &n);
+    int arr[4];
+    int a_win = 0, b_win = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d%d%d%d", &arr[0], &arr[1], &arr[2], &arr[3]);
+        bool a = arr[1] == arr[0] + arr[2];
+        bool b = arr[3] == arr[0] + arr[2];
+        if (a && !b)
+            ++a_win;
+        else if (b && !a)
+            ++b_win;
+    }
+    printf("%d %d\n", b_win, a_win);
+}
+}
+
+namespace basic_47 {
+constexpr int N = 1005;
+
+int score[N];
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    int tid, id, s;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d-%d %d", &tid, &id, &s);
+        score[tid] += s;
+    }
+    int max_id = 0;
+    for (int j = 0; j < N; ++j)
+    {
+        if (score[j] > score[max_id])
+            max_id = j;
+    }
+    printf("%d %d\n", max_id, score[max_id]);
+}
+}
+
+namespace basic_48 {
+
+const char OUT[13] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'J', 'Q', 'K'};
+using std::string;
+
+
+void entry()
+{
+    string s1, s2, ans;
+    std::cin >> s1 >> s2;
+
+    std::reverse(s1.begin(), s1.end());
+    std::reverse(s2.begin(), s2.end());
+
+    for (int i = 0, s; i < std::max(s1.size(), s2.size()); ++i)
+    {
+        int a = i < s2.size() ? s2[i] - '0' : 0;
+        int b = i < s1.size() ? s1[i] - '0' : 0;
+
+        if (i % 2 == 0)
+            s = (a + b) % 13;
+        else
+        {
+            s = a - b;
+            if (s < 0)
+                s += 10;
+        }
+        ans.push_back(OUT[s]);
+    }
+    std::reverse(ans.begin(), ans.end());
+    std::cout << ans << std::endl;
+}
+}
+
+namespace basic_49 {
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    double v;
+    long long sum = 0;
+    for (int i = 1; i <= n; ++i)
+    {
+
+        scanf("%lf", &v);
+        long long t = (long long)(1000 * v * i * (n + 1 - i));
+
+        sum += t;
+    }
+    printf("%.2f\n", sum/1000.0);
+}
+}
+
+namespace basic_50 {
+
+constexpr int N = 10'005;
+
+int seq[N];
+void calc_mn(int total_num, int &m, int &n)
+{
+    m = sqrt(total_num);
+    n = total_num / m;
+    while (total_num % m != 0 || m < n)
+    {
+        m++;
+        n = total_num / m;
+    }
+}
+
+
+
+void print_matrix(int m, int n)
+{
+    std::vector<std::vector<int>> ans(m, std::vector<int>(n));
+    int len = 0, sz = m * n;
+    int row = m, col = n;
+    for (int x = 0, y = 0, i, j; len < sz; ++x, ++y)
+    {
+        i = x;
+        j = y;
+        for ( ; j < n && len < sz; ++j)
+        {
+            ans[i][j] = seq[len++];
+        }
+        ++i, --j;
+        for (; i < m && len < sz; ++i)
+        {
+            ans[i][j] = seq[len++];
+        }
+        --i, --j;
+        for (; j >= y && len < sz; --j)
+        {
+            ans[i][j] = seq[len++];
+        }
+        ++j, --i;
+        for (; i > x && len < sz; --i)
+        {
+            ans[i][j] = seq[len++];
+        }
+        --m, --n;
+    }
+    for (int i = 0; i < row; ++i)
+    {
+        for (int j = 0; j < col; ++j)
+        {
+            printf("%d", ans[i][j]);
+            if (j < col - 1)
+                printf(" ");
+        }
+        printf("\n");
+    }
+}
+
+void entry()
+{
+    int total_num, m, n;
+    scanf("%d", &total_num);
+    for (int i = 0; i < total_num; ++i)
+    {
+        scanf("%d", &seq[i]);
+    }
+
+    std::sort(seq, seq + total_num, [](int a, int b) { return a > b; });
+    calc_mn(total_num, m, n);
+    print_matrix(m, n);
+}
+}
+
+namespace basic_51 {
+
+
+
+
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -838,5 +1012,25 @@ void test_all()
 
 int main(int argc, char **argv)
 {
+//    basic_31::entry();
+//    basic_32::entry();
+//    basic_33::entry();
+//    basic_34::entry();
+//    basic_35::entry();
+//    basic_36::entry();
+//    basic_37::entry();
+//    basic_38::entry();
+//    basic_39::entry();
+//    basic_40::entry();
+//    basic_41::entry();
+//    basic_42::entry();
+//    basic_43::entry();
+//    basic_44::entry();
+//    basic_45::entry();
+//    basic_46::entry();
+//    basic_47::entry();
+//    basic_48::entry();
+//    basic_49::entry();
+    basic_50::entry();
     return 0;
 }
