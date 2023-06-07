@@ -1328,8 +1328,8 @@ void entry()
     {
         for (int i = 0; i < (j == 0 ? n / k + n % k : n / k); ++i)
         {
-//            printf("%s", queue[j][i].name);
-            printf("%d", queue[j][i].height);
+            printf("%s", queue[j][i].name);
+//            printf("%d", queue[j][i].height);
             if (i < (j == 0 ? n / k + n % k : n / k) - 1)
                 printf(" ");
         }
