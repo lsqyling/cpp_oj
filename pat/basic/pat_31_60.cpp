@@ -1338,6 +1338,36 @@ void entry()
 }
 }
 
+namespace basic_56 {
+
+void entry()
+{
+    int n;
+    std::cin >> n;
+    std::vector<std::string> nums;
+    std::string tmp;
+    for (int i = 0; i < n; ++i)
+    {
+        std::cin >> tmp;
+        nums.push_back(tmp);
+    }
+
+    int sum = 0;
+    for (int j = 0; j < nums.size(); ++j)
+    {
+
+        for (int i = j + 1; i < nums.size(); ++i)
+        {
+            sum += std::stoi(nums[i]+nums[j]);
+            sum += std::stoi(nums[j]+nums[i]);
+        }
+    }
+
+    printf("%d\n", sum);
+
+}
+}
+
 
 
 
@@ -1372,6 +1402,7 @@ int main(int argc, char **argv)
 //    basic_53::entry();
 //    basic_54::entry();
 //    basic_54_b::entry();
-    basic_55::entry();
+//    basic_55::entry();
+    basic_56::entry();
     return 0;
 }
