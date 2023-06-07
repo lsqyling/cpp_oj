@@ -993,33 +993,234 @@ void entry()
 }
 }
 
-namespace basic_1052 {
+namespace basic_52 {
 
+char handset[15][30];
+char eyeset[15][30];
+char mouthset[15][30];
 
-
-
-
-
-
+void do_set(char line[], int len, char set[][30])
+{
+    int j = 1;
+    for (int i = 0; i < len; ++i)
+    {
+        if (line[i] == '[')
+        {
+            int k = 0;
+            ++i;
+            while (i < len && line[i] != ']')
+            {
+                set[j][k++] = line[i++];
+            }
+            ++j;
+        }
+    }
 }
 
+void entry()
+{
+    char line[1024];
+    memset(line, '\0', sizeof(line));
+    memset(handset, '\0', sizeof(handset));
+    memset(eyeset, '\0', sizeof(eyeset));
+    memset(mouthset, '\0', sizeof(mouthset));
 
 
 
+    fgets(line, sizeof(line), stdin);
+    do_set(line, strlen(line), handset);
 
+    fgets(line, sizeof(line), stdin);
+    do_set(line, strlen(line), eyeset);
 
+    fgets(line, sizeof(line), stdin);
+    do_set(line, strlen(line), mouthset);
 
+    int k, id[6];
+    scanf("%d", &k);
+    for (int i = 0; i < k; ++i)
+    {
+        for (int j = 1; j <= 5; ++j)
+        {
+            scanf("%d", &id[j]);
+        }
+//        左手、左眼、口、右眼、右手
+        if (strlen(handset[id[1]]) == 0
+            || strlen(eyeset[id[2]]) == 0
+            || strlen(mouthset[id[3]]) == 0
+            || strlen(eyeset[id[4]]) == 0
+            || strlen(handset[id[5]]) == 0)
+        {
+            printf("Are you kidding me? @\\/@\n");
+        }
+        else
+        {
 
+            printf("%s(%s%s%s)%s\n", handset[id[1]], eyeset[id[2]],
+                    mouthset[id[3]], eyeset[id[4]], handset[id[5]]);
+        }
+    }
+}
+}
 
+namespace basic_53 {
 
+void entry()
+{
+    int house, D;
+    double e;
+    scanf("%d%lf%d", &house, &e, &D);
+    int may_vacant = 0, vacant = 0;
+    for (int i = 0; i < house; ++i)
+    {
+        int k, count = 0;
+        scanf("%d", &k);
+        double ei;
+        for (int j = 0; j < k; ++j)
+        {
+            scanf("%lf", &ei);
+            if (ei < e)
+                ++count;
+        }
+        if (count > k / 2)
+        {
+            ++may_vacant;
+            if (k > D)
+                ++vacant;
+        }
+    }
 
+    printf("%.1f%% %.1f%%\n", 1.0 * 100 * (may_vacant - vacant) / house,
+                            1.0 * 100 * vacant / house);
+}
+}
 
+namespace basic_54 {
 
+void entry()
+{
+    int n;
+    std::cin >> n;
+    std::string str;
+    int count = 0;
+    double sum = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        bool is_float = true;
+        std::cin >> str;
 
+        auto it = str.find('.');
+        if (it != std::string::npos)
+        {
+            int sz = str.size();
+            if (sz - (int)it > 3)
+                is_float = false;
 
+            it = str.find('.', it + 1);
+            if (it != std::string::npos)
+                is_float = false;
+        }
+        else
+        {
+            for (int j = 0; j < str.size(); ++j)
+            {
+                if (!(('0' <= str[j] && str[j] <= '9') || str[j] == '-' || str[j] == '+'))
+                {
+                    is_float = false;
+                    break;
+                }
+            }
+        }
 
+        if (str.size() > 8)
+            is_float = false;
 
+        double d;
+        if (is_float)
+        {
+            try
+            {
+                d = std::stod(str);
 
+            } catch (...)
+            {
+                is_float = false;
+            }
+        }
+
+        if (is_float && -1000 - 0.005 < d && d < 1000 + 0.005)
+        {
+            ++count;
+            sum += d;
+        }
+        else
+        {
+            std::cout << "ERROR: "<< str << " is not a legal number" << std::endl;
+        }
+    }
+
+    if (count == 0)
+        printf("The average of 0 numbers is Undefined\n");
+    else if (count == 1)
+    {
+        printf("The average of %d number is %.2f", count, sum);
+    }
+    else
+    {
+        printf("The average of %d numbers is %.2f\n", count, sum / count);
+    }
+}
+}
+
+namespace basic_54_b {
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    char raw[32], format[32];
+    int count = 0;
+    double sum = 0, tmp;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%s", raw);
+        sscanf(raw, "%lf", &tmp);
+        sprintf(format, "%.2f", tmp);
+        int flag = 0;
+        for (int j = 0; j < strlen(raw); ++j)
+        {
+            if (raw[j] != format[j])
+            {
+                flag = 1;
+                break;
+            }
+        }
+        if (flag == 1 || tmp > 1000 || tmp < -1000)
+        {
+            printf("ERROR: %s is not a legal number\n", raw);
+        }
+        else
+        {
+            sum += tmp;
+            ++count;
+        }
+    }
+    if (count == 0)
+    {
+        printf("The average of 0 numbers is Undefined");
+
+    }
+    else if (count == 1)
+    {
+        printf("The average of 1 number is %.2f", sum);
+    }
+    else
+    {
+        printf("The average of %d numbers is %.2f", count, sum / count);
+
+    }
+}
+}
 
 
 
@@ -1052,6 +1253,10 @@ int main(int argc, char **argv)
 //    basic_48::entry();
 //    basic_49::entry();
 //    basic_50::entry();
-    basic_51::entry();
+//    basic_51::entry();
+//    basic_52::entry();
+//    basic_53::entry();
+//    basic_54::entry();
+    basic_54_b::entry();
     return 0;
 }
