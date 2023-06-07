@@ -1222,7 +1222,121 @@ void entry()
 }
 }
 
+namespace basic_55 {
+constexpr int N = 10'005;
 
+struct stu
+{
+    char name[10];
+    int height;
+};
+
+bool operator<(const stu &a, const stu &b)
+{
+    if (a.height != b.height)
+        return a.height > b.height;
+    else
+        return strcmp(a.name, b.name) < 0;
+}
+
+stu all[N];
+
+void line_up(int n, int k, std::vector<std::vector<stu>> &queue)
+{
+    int m, first_m;
+    for (int i = 0; i < k; ++i)
+    {
+        bool flag1 = false, flag2 = false;
+        bool left = true;
+        int t = 1;
+        m = (i == 0 ? (first_m = n / k + n % k) : n / k);
+        if (i == 0)
+        {
+            for (int j = 0; j < m; ++j)
+            {
+                if (j == 0)
+                    queue[i][m/2] = all[j];
+                else
+                {
+                    if (left)
+                    {
+                        queue[i][m/2-t] = all[j];
+                        flag1 = true;
+                        left = false;
+                    }
+                    else
+                    {
+                        queue[i][m/2+t] = all[j];
+                        flag2 = true;
+                        left = true;
+                    }
+                }
+                if (flag1 && flag2)
+                {
+                    ++t;
+                    flag1 = flag2 = false;
+                }
+            }
+        }
+        else
+        {
+            for (int j = first_m + (i - 1) * m; j < first_m + (i - 1) * m + m; ++j)
+            {
+                if (j == first_m + (i - 1) * m)
+                    queue[i][m/2] = all[j];
+                else
+                {
+                    if (left)
+                    {
+                        queue[i][m/2-t] = all[j];
+                        flag1 = true;
+                        left = false;
+                    }
+                    else
+                    {
+                        queue[i][m/2+t] = all[j];
+                        flag2 = true;
+                        left = true;
+                    }
+                }
+                if (flag1 && flag2)
+                {
+                    ++t;
+                    flag1 = flag2 = false;
+                }
+
+
+            }
+        }
+    }
+}
+
+
+void entry()
+{
+    int n, k;
+    scanf("%d%d", &n, &k);
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%s%d", all[i].name, &all[i].height);
+    }
+    std::sort(all, all + n);
+    std::vector<std::vector<stu>> queue(k, std::vector<stu>(n / k + n % k));
+    line_up(n, k, queue);
+
+    for (int j = 0; j < k; ++j)
+    {
+        for (int i = 0; i < (j == 0 ? n / k + n % k : n / k); ++i)
+        {
+//            printf("%s", queue[j][i].name);
+            printf("%d", queue[j][i].height);
+            if (i < (j == 0 ? n / k + n % k : n / k) - 1)
+                printf(" ");
+        }
+        printf("\n");
+    }
+}
+}
 
 
 
@@ -1257,6 +1371,7 @@ int main(int argc, char **argv)
 //    basic_52::entry();
 //    basic_53::entry();
 //    basic_54::entry();
-    basic_54_b::entry();
+//    basic_54_b::entry();
+    basic_55::entry();
     return 0;
 }
