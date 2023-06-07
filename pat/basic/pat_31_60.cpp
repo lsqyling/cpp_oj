@@ -973,6 +973,28 @@ void entry()
 
 namespace basic_51 {
 
+void entry()
+{
+    double r1, p1, r2, p2;
+    scanf("%lf%lf%lf%lf", &r1, &p1, &r2, &p2);
+
+    double a = r1 * r2 * cos(p1 + p2);
+    double b = r1 * r2 * sin(p1 + p2);
+    /*
+     * Pay attention to the math of floating point numbers.
+     */
+    if (fabs(a) < 0.005) a = 0;
+    if (fabs(b) < 0.005) b = 0;
+
+    if (b < 0)
+        printf("%.2f-%.2fi\n", a, fabs(b));
+    else
+        printf("%.2f+%.2fi\n", a, b);
+}
+}
+
+namespace basic_1052 {
+
 
 
 
@@ -980,8 +1002,6 @@ namespace basic_51 {
 
 
 }
-
-
 
 
 
@@ -1031,6 +1051,7 @@ int main(int argc, char **argv)
 //    basic_47::entry();
 //    basic_48::entry();
 //    basic_49::entry();
-    basic_50::entry();
+//    basic_50::entry();
+    basic_51::entry();
     return 0;
 }
