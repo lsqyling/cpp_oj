@@ -1392,7 +1392,7 @@ namespace basic_58 {
 
 struct question
 {
-    int id, score;
+    int score;
     int item;
     std::string right_ans;
 };
@@ -1408,7 +1408,6 @@ void entry()
     int t;
     for (int i = 1; i <= n; ++i)
     {
-        qs[i].id = i;
         std::cin >> qs[i].score >> qs[i].item >> t;
         qs[i].right_ans += std::to_string(t);
         for (int j = 0; j < t; ++j)
@@ -1557,15 +1556,6 @@ void entry()
 }
 
 
-
-
-
-
-
-
-
-
-
 }
 
 
@@ -1574,36 +1564,36 @@ void entry()
 
 int main(int argc, char **argv)
 {
-//    basic_31::entry();
-//    basic_32::entry();
-//    basic_33::entry();
-//    basic_34::entry();
-//    basic_35::entry();
-//    basic_36::entry();
-//    basic_37::entry();
-//    basic_38::entry();
-//    basic_39::entry();
-//    basic_40::entry();
-//    basic_41::entry();
-//    basic_42::entry();
-//    basic_43::entry();
-//    basic_44::entry();
-//    basic_45::entry();
-//    basic_46::entry();
-//    basic_47::entry();
-//    basic_48::entry();
-//    basic_49::entry();
-//    basic_50::entry();
-//    basic_51::entry();
-//    basic_52::entry();
-//    basic_53::entry();
-//    basic_54::entry();
-//    basic_54_b::entry();
-//    basic_55::entry();
-//    basic_56::entry();
-//    basic_57::entry();
-//    basic_58::entry();
-//    basic_59::entry();
+    basic_31::entry();
+    basic_32::entry();
+    basic_33::entry();
+    basic_34::entry();
+    basic_35::entry();
+    basic_36::entry();
+    basic_37::entry();
+    basic_38::entry();
+    basic_39::entry();
+    basic_40::entry();
+    basic_41::entry();
+    basic_42::entry();
+    basic_43::entry();
+    basic_44::entry();
+    basic_45::entry();
+    basic_46::entry();
+    basic_47::entry();
+    basic_48::entry();
+    basic_49::entry();
+    basic_50::entry();
+    basic_51::entry();
+    basic_52::entry();
+    basic_53::entry();
+    basic_54::entry();
+    basic_54_b::entry();
+    basic_55::entry();
+    basic_56::entry();
+    basic_57::entry();
+    basic_58::entry();
+    basic_59::entry();
     basic_60::entry();
     return 0;
 }
