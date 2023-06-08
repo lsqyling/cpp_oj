@@ -1368,8 +1368,205 @@ void entry()
 }
 }
 
+namespace basic_57 {
+void entry()
+{
+    int sum = 0;
+    int count[2]{0};
+    int c;
+
+    while ((c = getchar()) != '\n')
+    {
+        if (isalpha(c))
+            sum += tolower(c) - 'a' + 1;
+    }
+
+    for ( ; sum; sum >>= 1)
+        ++count[sum & 1];
+
+    printf("%d %d", count[0], count[1]);
+}
+}
+
+namespace basic_58 {
+
+struct question
+{
+    int id, score;
+    int item;
+    std::string right_ans;
+};
+
+question qs[105];
+int wrong_table[105];
+
+void entry()
+{
+    int m, n;
+    std::cin >> m >> n;
+    std::string tmp;
+    int t;
+    for (int i = 1; i <= n; ++i)
+    {
+        qs[i].id = i;
+        std::cin >> qs[i].score >> qs[i].item >> t;
+        qs[i].right_ans += std::to_string(t);
+        for (int j = 0; j < t; ++j)
+        {
+            std::cin >> tmp;
+            qs[i].right_ans += tmp;
+        }
+    }
+    int max_wrong_times = 0;
+    for (int j = 0; j < m; ++j)
+    {
+        int score = 0;
+        for (int i = 1; i <= n; ++i)
+        {
+            std::string ans;
+            getchar();
+            scanf("(%d", &t);
+            ans += std::to_string(t);
+            char ctmp;
+            for (int k = 1; k < t; ++k)
+            {
+                std::cin >> tmp;
+                ans += tmp;
+            }
+            scanf(" %c)", &ctmp);
+            ans += ctmp;
+            int cs = (qs[i].right_ans == ans ? qs[i].score : 0);
+
+            score += cs;
+            if (cs == 0)
+            {
+                wrong_table[i]++;
+                if (wrong_table[i] > max_wrong_times)
+                    max_wrong_times = wrong_table[i];
+            }
+        }
+        printf("%d\n", score);
+    }
+
+    int count = 0;
+    for (int i = 1; i <= n; ++i)
+    {
+        if (max_wrong_times == wrong_table[i])
+            ++count;
+    }
+    if (max_wrong_times == 0)
+        printf("Too simple");
+    else
+    {
+        printf("%d ", max_wrong_times);
+        for (int i = 1; i <= n; ++i)
+        {
+            if (max_wrong_times == wrong_table[i])
+            {
+                printf("%d", i);
+                if (--count > 0)
+                    printf(" ");
+            }
+        }
+    }
+}
+}
+
+namespace basic_59 {
+constexpr int N = 10'005;
+
+struct stu
+{
+    int rank;
+    bool got_yet;
+};
+
+stu all[N];
+
+bool is_prime(int n)
+{
+    if (n < 2)
+        return false;
+    int sqrt_n = sqrt(n);
+    for (int i = 2; i <= sqrt_n; ++i)
+    {
+        if (n % i == 0)
+            return false;
+    }
+    return true;
+}
 
 
+void entry()
+{
+    int n, k;
+    scanf("%d", &n);
+    int id;
+    for (int i = 1; i <= n; ++i)
+    {
+        scanf("%d", &id);
+        all[id].rank = i;
+        all[id].got_yet = false;
+    }
+
+    scanf("%d", &k);
+    for (int j = 0; j < k; ++j)
+    {
+        scanf("%d", &id);
+
+        if (all[id].rank == 0)
+            printf("%04d: Are you kidding?\n", id);
+        else
+        {
+            if (all[id].got_yet)
+                printf("%04d: Checked\n", id);
+            else
+            {
+                all[id].got_yet = true;
+                if (all[id].rank == 1)
+                    printf("%04d: Mystery Award\n", id);
+                else if (is_prime(all[id].rank))
+                    printf("%04d: Minion\n", id);
+                else
+                    printf("%04d: Chocolate\n", id);
+            }
+        }
+    }
+}
+}
+
+namespace basic_60 {
+constexpr int N = 100'005;
+
+int miles[N];
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d", &miles[i]);
+    }
+    std::sort(miles, miles + n, [](int a, int b) { return a > b; });
+
+    int e;
+    for (e = 0; e < n && miles[e] > e + 1; ++e);
+    printf("%d", e);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+}
 
 
 
@@ -1403,6 +1600,10 @@ int main(int argc, char **argv)
 //    basic_54::entry();
 //    basic_54_b::entry();
 //    basic_55::entry();
-    basic_56::entry();
+//    basic_56::entry();
+//    basic_57::entry();
+//    basic_58::entry();
+//    basic_59::entry();
+    basic_60::entry();
     return 0;
 }
