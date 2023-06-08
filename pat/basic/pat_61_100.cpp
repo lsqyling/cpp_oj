@@ -5,6 +5,7 @@
 #include <cstring>
 #include <iostream>
 #include <string>
+#include <map>
 
 
 namespace basic_61 {
@@ -300,6 +301,65 @@ void entry()
 }
 }
 
+namespace basic_68 {
+constexpr int N = 1005;
+const int Direct[8][2] = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
+
+int graph[N][N];
+int TOL;
+
+bool judge(int n, int m, int x1, int y1)
+{
+    for (int k = 0; k < 8; ++k)
+    {
+        int x2 = x1 + Direct[k][0];
+        int y2 = y1 + Direct[k][1];
+        if (0 <= x2 && x2 <= n
+            && 0 <= y2 && y2 <= m
+            && abs(graph[x1][y1] - graph[x2][y2]) <= TOL)
+            return false;
+    }
+    return true;
+}
+
+void entry()
+{
+    int m, n;
+    scanf("%d%d%d", &m, &n, &TOL);
+    std::map<int, int> maps;
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < m; ++j)
+        {
+            scanf("%d", &graph[i][j]);
+            ++maps[graph[i][j]];
+        }
+    }
+    int count = 0;
+    int x, y;
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < m; ++j)
+        {
+            if (maps[graph[i][j]] == 1 && judge(n, m, i, j))
+            {
+                ++count;
+                x = i + 1;
+                y = j + 1;
+            }
+        }
+    }
+
+    if (count == 0)
+        printf("Not Exist");
+    else if (count == 1)
+        printf("(%d, %d): %d", y, x, graph[x-1][y-1]);
+    else
+        printf("Not Unique");
+}
+}
+
+
 
 
 
@@ -327,7 +387,8 @@ int main(int argc, char **argv)
 //    basic_64::entry();
 //    basic_65::entry();
 //    basic_66::entry();
-    basic_67::entry();
+//    basic_67::entry();
+    basic_68::entry();
     return 0;
 
 }
