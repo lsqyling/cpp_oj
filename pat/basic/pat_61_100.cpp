@@ -3,6 +3,9 @@
 #include <vector>
 #include <cmath>
 #include <cstring>
+#include <iostream>
+#include <string>
+
 
 namespace basic_61 {
 
@@ -251,14 +254,52 @@ void entry()
 
 namespace basic_66 {
 
-
-
-
-
-
-
-
+void entry()
+{
+    int m, n, A, B, v, x;
+    scanf("%d%d%d%d%d", &m, &n, &A, &B, &v);
+    for (int i = 0; i < m; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            scanf("%d", &x);
+            if (A <= x && x <= B)
+                x = v;
+            printf("%03d", x);
+            if (j < n - 1)
+                printf(" ");
+        }
+        printf("\n");
+    }
 }
+}
+
+namespace basic_67 {
+void entry()
+{
+    std::string password;
+    int n;
+    std::cin >> password >> n;
+    getchar();
+    std::string tmp;
+    for (int j = 0; j < n; ++j)
+    {
+
+        std::getline(std::cin, tmp);
+        if (tmp == "#")
+            return ;
+        if (tmp == password)
+        {
+            std::cout << "Welcome in";
+            return ;
+        }
+        else
+            std::cout << "Wrong password: " << tmp << std::endl;
+    }
+    std::cout << "Account locked";
+}
+}
+
 
 
 
@@ -284,8 +325,9 @@ int main(int argc, char **argv)
 //    basic_62::entry();
 //    basic_63::entry();
 //    basic_64::entry();
-    basic_65::entry();
-
+//    basic_65::entry();
+//    basic_66::entry();
+    basic_67::entry();
     return 0;
 
 }
