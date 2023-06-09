@@ -443,9 +443,7 @@ int main(int argc, char **argv)
 //    basic_67::entry();
 //    basic_68::entry();
 //    basic_69::entry();
-//    basic_70::entry();
-    double b = 0.99;
-    printf("%.0f", b);
+    basic_70::entry();
     return 0;
 
 }
