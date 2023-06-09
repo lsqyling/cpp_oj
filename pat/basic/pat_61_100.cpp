@@ -359,9 +359,62 @@ void entry()
 }
 }
 
+namespace basic_69 {
+constexpr int M = 1005;
+
+std::string nickname[M];
 
 
+void entry()
+{
+    int m, n, s;
+    std::cin >> m >> n >> s;
+    for (int i = 1; i <= m; ++i)
+        std::cin >> nickname[i];
 
+    if (s > m)
+    {
+        std::cout << "Keep going...\n";
+        return ;
+    }
+    std::map<std::string, bool> mps;
+    for (int i = s; i <= m; i += n)
+    {
+        while (i <= m && mps[nickname[i]])
+            ++i;
+        if (i > m)
+            break;
+        std::cout << nickname[i] << std::endl;
+        mps[nickname[i]] = true;
+    }
+}
+}
+
+namespace basic_70 {
+constexpr int N = 10'005;
+
+int num[N];
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d", &num[i]);
+    }
+
+    std::sort(num, num + n);
+    double s = num[0];
+
+    for (int j = 1; j < n; ++j)
+    {
+        s += num[j];
+        s /= 2;
+    }
+    printf("%.0f", floor(s));
+}
+}
 
 
 
@@ -388,7 +441,11 @@ int main(int argc, char **argv)
 //    basic_65::entry();
 //    basic_66::entry();
 //    basic_67::entry();
-    basic_68::entry();
+//    basic_68::entry();
+//    basic_69::entry();
+//    basic_70::entry();
+    double b = 0.99;
+    printf("%.0f", b);
     return 0;
 
 }
