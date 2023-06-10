@@ -628,7 +628,65 @@ void entry()
 }
 }
 
+namespace basic_74 {
+constexpr int N = 25;
 
+char base_num[N];
+
+
+void add_pat_numbers(char a[], char b[], int len1, int len2, int sum[])
+{
+    int r = 0;
+    int i, s, t, base;
+    for (i = 0; i < len1 || i < len2; ++i)
+    {
+        s = a[i] - '0';
+        t = b[i] - '0';
+
+        s = s < 0 ? 0 : s;
+        t = t < 0 ? 0 : t;
+
+
+        base = base_num[i] == '0' ? 10 : (base_num[i] - '0');
+
+        sum[i] = (r + s + t) % base;
+        r = (r + s + t) / base;
+
+    }
+    if (r)
+    {
+        base = base_num[i] == '0' ? 10 : (base_num[i] - '0');
+        sum[i++] += r % base;
+    }
+    int j = i - 1;
+    while (j > 0 && sum[j] == 0) --j;
+    for ( ; j >= 0; --j)
+    {
+        printf("%d", sum[j]);
+    }
+}
+
+
+
+void entry()
+{
+    char a[N], b[N];
+    memset(a, '\0', sizeof(a));
+    memset(b, '\0', sizeof(b));
+
+    scanf("%s%s%s", base_num, a, b);
+    int len1 = strlen(a);
+    int len2 = strlen(b);
+
+    std::reverse(a, a + len1);
+    std::reverse(b, b + len2);
+    std::reverse(base_num, base_num + strlen(base_num));
+
+    int sum[N];
+    memset(sum, 0, sizeof(sum));
+    add_pat_numbers(a, b, len1, len2, sum);
+}
+}
 
 
 
@@ -656,7 +714,8 @@ int main(int argc, char **argv)
 //    basic_70::entry();
 //    basic_71::entry();
 //    basic_72::entry();
-    basic_73::entry();
+//    basic_73::entry();
+    basic_74::entry();
     return 0;
 
 }
