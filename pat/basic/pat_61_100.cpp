@@ -530,11 +530,11 @@ struct choice_question
 {
     int num;
     bool options[OPT_SZ];
-    int error_op[OPT_SZ];
 };
 
 answer all_answer[M];
-choice_question choices[M];
+
+int error_op[M][OPT_SZ];
 int max_opt_error_times = 0;
 
 
@@ -550,19 +550,19 @@ double calc_score(choice_question &choice, int i)
             if (!ans.options[j])
             {
                 flag = false;
-                ++choices[i].error_op[j];
+                ++error_op[i][j];
 
-                if (choices[i].error_op[j] > max_opt_error_times)
-                    max_opt_error_times = choices[i].error_op[j];
+                if (error_op[i][j] > max_opt_error_times)
+                    max_opt_error_times = error_op[i][j];
             }
         }
         if (ans.options[j])
         {
             if (!choice.options[j])
             {
-                ++choices[i].error_op[j];
-                if (choices[i].error_op[j] > max_opt_error_times)
-                    max_opt_error_times = choices[i].error_op[j];
+                ++error_op[i][j];
+                if (error_op[i][j] > max_opt_error_times)
+                    max_opt_error_times = error_op[i][j];
             }
         }
     }
@@ -620,7 +620,7 @@ void entry()
         {
             for (int k = 0; k < OPT_SZ; ++k)
             {
-                if (choices[i].error_op[k] == max_opt_error_times)
+                if (error_op[i][k] == max_opt_error_times)
                     printf("%d %d-%c\n", max_opt_error_times, i, k + 'a');
             }
         }
