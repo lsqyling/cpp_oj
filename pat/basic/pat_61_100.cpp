@@ -416,7 +416,217 @@ void entry()
 }
 }
 
+namespace basic_71 {
 
+void entry()
+{
+    int T, K;
+    scanf("%d%d", &T, &K);
+    int n1, b, t, n2;
+    for (int i = 0; i < K; ++i)
+    {
+        scanf("%d%d%d%d", &n1, &b, &t, &n2);
+        if (T <= 0)
+        {
+            printf("Game Over.");
+            return;
+        }
+        else if (t > T)
+        {
+            printf("Not enough tokens.  Total = %d.\n", T);
+        }
+        else
+        {
+            bool flag;
+            if (b == 0)
+                flag = n2 < n1;
+            if (b == 1)
+                flag = n2 > n1;
+
+            if (flag)
+            {
+                T += t;
+                printf("Win %d!  Total = %d.\n", t, T);
+            }
+            else
+            {
+                T -= t;
+                printf("Lose %d.  Total = %d.\n", t, T);
+            }
+        }
+    }
+}
+}
+
+namespace basic_72 {
+constexpr int N = 1'0005;
+
+struct stu
+{
+    char name[5];
+    std::vector<int> goods;
+};
+bool table[N];
+
+
+void entry()
+{
+    int n, m, id;
+    scanf("%d%d", &n, &m);
+    for (int i = 0; i < m; ++i)
+    {
+        scanf("%d", &id);
+        table[id] = true;
+    }
+
+    int count = 0;
+    std::vector<stu> pss;
+    for (int j = 0; j < n; ++j)
+    {
+        int k;
+        stu st;
+        scanf("%s%d", st.name, &k);
+        for (int i = 0; i < k; ++i)
+        {
+            scanf("%d", &id);
+            if (table[id])
+            {
+                st.goods.push_back(id);
+            }
+        }
+        if (!st.goods.empty())
+            pss.push_back(st);
+    }
+    for (int i = 0; i < pss.size(); ++i)
+    {
+        printf("%s: ", pss[i].name);
+        count += pss[i].goods.size();
+        for (int j = 0; j < pss[i].goods.size(); ++j)
+        {
+            printf("%04d", pss[i].goods[j]);
+            if (j < pss[i].goods.size() - 1)
+                printf(" ");
+        }
+        printf("\n");
+    }
+    printf("%d %d", pss.size(), count);
+}
+}
+
+namespace basic_73 {
+constexpr int M = 105;
+constexpr int OPT_SZ = 5;
+
+
+struct answer
+{
+    int score;
+    int total_ops;
+    int correct_ops;
+    bool options[OPT_SZ];
+};
+
+struct choice_question
+{
+    int num;
+    bool options[OPT_SZ];
+    int error_op[OPT_SZ];
+};
+
+answer all_answer[M];
+choice_question choices[M];
+int max_opt_error_times = 0;
+
+
+double calc_score(choice_question &choice, int i)
+{
+    double s = 0;
+    answer &ans = all_answer[i];
+    bool flag = true;
+    for (int j = 0; j < OPT_SZ; ++j)
+    {
+        if (choice.options[j])
+        {
+            if (!ans.options[j])
+            {
+                flag = false;
+                ++choices[i].error_op[j];
+
+                if (choices[i].error_op[j] > max_opt_error_times)
+                    max_opt_error_times = choices[i].error_op[j];
+            }
+        }
+        if (ans.options[j])
+        {
+            if (!choice.options[j])
+            {
+                ++choices[i].error_op[j];
+                if (choices[i].error_op[j] > max_opt_error_times)
+                    max_opt_error_times = choices[i].error_op[j];
+            }
+        }
+    }
+    if (flag && choice.num == ans.correct_ops)
+        s += ans.score;
+    else if (flag)
+        s += 1.0 * ans.score / 2;
+    return s;
+}
+
+void entry()
+{
+    int n, m;
+    scanf("%d%d", &n, &m);
+    for (int i = 1; i <= m; ++i)
+    {
+        scanf("%d%d%d", &all_answer[i].score, &all_answer[i].total_ops, &all_answer[i].correct_ops);
+        for (int j = 0; j < all_answer[i].correct_ops; ++j)
+        {
+            char c;
+            scanf(" %c", &c);
+            all_answer[i].options[c-'a'] = true;
+        }
+    }
+
+
+    for (int k = 0; k < n; ++k)
+    {
+        double s = 0;
+        for (int i = 1; i <= m; ++i)
+        {
+            choice_question choice;
+            memset(&choice, 0, sizeof(choice));
+            getchar();
+            scanf("(%d", &choice.num);
+            char c;
+            int j;
+            for (j = 0; j < choice.num - 1; ++j)
+            {
+                scanf(" %c", &c);
+                choice.options[c-'a'] = true;
+            }
+            scanf(" %c)", &c);
+            choice.options[c-'a'] = true;
+
+            s += calc_score(choice, i);
+        }
+        printf("%.1f\n", s);
+    }
+    if (max_opt_error_times == 0)
+        printf("Too simple");
+    else
+    {
+        for (int i = 1; i <= m; ++i)
+        {
+            for (int k = 0; k < OPT_SZ; ++k)
+            {
+                if (choices[i].error_op[k] == max_opt_error_times)
+                    printf("%d %d-%c\n", max_opt_error_times, i, k + 'a');
+            }
+        }
+    }
+}
+}
 
 
 
@@ -443,7 +653,10 @@ int main(int argc, char **argv)
 //    basic_67::entry();
 //    basic_68::entry();
 //    basic_69::entry();
-    basic_70::entry();
+//    basic_70::entry();
+//    basic_71::entry();
+//    basic_72::entry();
+    basic_73::entry();
     return 0;
 
 }
