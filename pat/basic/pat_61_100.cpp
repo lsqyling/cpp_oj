@@ -688,6 +688,88 @@ void entry()
 }
 }
 
+namespace basic_75 {
+constexpr int N = 100'005;
+
+struct node
+{
+    int addr, data, next;
+    int id;
+};
+
+node input[N];
+int K;
+
+bool operator<(node a, node b)
+{
+    if (a.data < 0 && b.data < 0)
+        return a.id < b.id;
+    else if ((0 <= a.data && a.data <= K) && (0 <= b.data && b.data <= K))
+        return a.id < b.id;
+    else if (a.data > K && b.data > K)
+        return a.id < b.id;
+    else
+    {
+        return a.data < b.data;
+    }
+}
+
+
+void entry()
+{
+    int h, n;
+    scanf("%d%d%d", &h, &n, &K);
+    int addr, data, next;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d%d%d", &addr, &data, &next);
+        input[addr].addr = addr;
+        input[addr].data = data;
+        input[addr].next = next;
+    }
+
+    std::vector<node> list;
+    int id = 0;
+    while (h != -1)
+    {
+        input[h].id = id;
+        list.push_back(input[h]);
+        ++id;
+        h = input[h].next;
+    }
+
+    std::sort(list.begin(), list.end());
+
+
+    int j;
+    for (j = 0; j < list.size() - 1; ++j)
+    {
+        printf("%05d %d %05d\n", list[j].addr, list[j].data, list[j+1].addr);
+    }
+    printf("%05d %d -1\n", list[j].addr, list[j].data);
+}
+}
+
+namespace basic_76 {
+
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    getchar();
+    char c, judge;
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
+            scanf("%c-%c", &c, &judge);
+            getchar();
+            if (judge == 'T')
+                printf("%d", c - 'A' + 1);
+        }
+    }
+}
 
 
 
@@ -697,6 +779,280 @@ void entry()
 
 
 
+
+
+
+
+
+
+
+
+
+}
+
+namespace basic_77 {
+
+void entry()
+{
+    int n, M;
+    scanf("%d%d", &n, &M);
+
+    for (int i = 0; i < n; ++i)
+    {
+        int t, max = 0, min = M + 1, tmp, s = 0, len = 0;
+        scanf("%d", &t);
+        for (int j = 1; j < n; ++j)
+        {
+            scanf("%d", &tmp);
+            if (0 <= tmp && tmp <= M)
+            {
+                s += tmp;
+                ++len;
+                if (tmp > max)
+                    max = tmp;
+                if (tmp < min)
+                    min = tmp;
+            }
+        }
+
+        double d = round((t + 1.0 * (s - min - max) / (len - 2)) / 2);
+        printf("%.0f\n", d);
+    }
+}
+}
+
+namespace basic_78 {
+constexpr int N = 1024;
+
+char str[N];
+
+void compress(char in[], int len)
+{
+    for (int i = 0, j = 0; i < len; )
+    {
+        while (j < len && in[j] == in[i])
+            ++j;
+        int n = j - i;
+        if (n > 1)
+        {
+            printf("%d", n);
+        }
+
+        printf("%c", in[i]);
+        i = j;
+    }
+}
+
+void decompress(char in[], int len)
+{
+    for (int i = 0, j; i < len; ++i)
+    {
+        int n = 0;
+        for (j = i; '0' <= in[j] && in[j] <= '9'; ++j)
+            n = n * 10 + (in[j] - '0');
+
+        i = j;
+        if (n > 1)
+        {
+            while (n--)
+                printf("%c", in[i]);
+        }
+        else
+            printf("%c", in[i]);
+    }
+}
+
+
+
+
+void entry()
+{
+    char c;
+    scanf("%c", &c);
+    getchar();
+    fgets(str, sizeof(str), stdin);
+
+    int len = strlen(str);
+
+    if (c == 'C')
+        compress(str, len);
+    else if (c == 'D')
+        decompress(str, len);
+
+}
+}
+
+namespace basic_79 {
+constexpr int N = 1005;
+
+struct bign
+{
+    int arr[N];
+    int len;
+
+    bign() : arr{0}, len(0) {}
+};
+
+std::istream &operator>>(std::istream &is, bign &n)
+{
+    std::string str;
+    is >> str;
+    for (int i = str.size() -1; i >= 0; --i)
+    {
+        n.arr[n.len++] = str[i] - '0';
+    }
+    return is;
+}
+
+bign reverse(bign n)
+{
+    for (int i = 0, j = n.len - 1; i < j; ++i, --j)
+    {
+        std::swap(n.arr[i], n.arr[j]);
+    }
+    return n;
+}
+
+bign operator+(const bign &a, const bign &b)
+{
+    bign c;
+    int i, r = 0;
+    for (i = 0; i < a.len || i < b.len; ++i)
+    {
+        int s = r + a.arr[i] + b.arr[i];
+
+        c.arr[c.len++] = s % 10;
+        r = s / 10;
+    }
+    if (r)
+    {
+        c.arr[c.len++] = r % 10;
+    }
+
+    return c;
+}
+
+std::ostream &operator<<(std::ostream &os, const bign &a)
+{
+    for (int i = a.len - 1; i >= 0; --i)
+    {
+        os << a.arr[i];
+    }
+    return os;
+}
+
+bool is_palindromic(const bign &a)
+{
+    for (int i = 0, j = a.len - 1; i < j; ++i, --j)
+    {
+        if (a.arr[i] != a.arr[j])
+            return false;
+    }
+    return true;
+}
+
+
+void entry()
+{
+    bign a, b, c;
+    std::cin >> a;
+
+    bool flag = false;
+
+    if (is_palindromic(a))
+    {
+        std::cout << a << " is a palindromic number." << std::endl;
+        return ;
+    }
+
+    for (int i = 0; i < 10; ++i)
+    {
+        b = reverse(a);
+        c = a + b;
+        std::cout << a << " + " << b << " = " << (a+b) << std::endl;
+        if (is_palindromic(c))
+        {
+            std::cout << c << " is a palindromic number." << std::endl;
+            flag = true;
+            break;
+        }
+        a = c;
+    }
+
+    if (!flag)
+        std::cout << "Not found in 10 iterations." << std::endl;
+}
+}
+
+namespace basic_80 {
+struct stu
+{
+    char id[25];
+    int Gp, Gmid, Gf, G;
+
+    stu() : id{'\0'}, Gp(-1), Gmid(-1), Gf(-1), G(0) {}
+};
+
+bool operator<(const stu &a, const stu &b)
+{
+    if (a.G != b.G)
+        return a.G > b.G;
+    else
+        return strcmp(a.id, b.id) < 0;
+}
+
+std::map<std::string, stu> all;
+
+
+void entry()
+{
+    int p, m, n;
+    scanf("%d%d%d", &p, &m, &n);
+
+    stu tmp;
+    for (int i = 0; i < p; ++i)
+    {
+        scanf("%s%d", tmp.id, &tmp.Gp);
+        all[tmp.id] = tmp;
+    }
+    for (int j = 0; j < m; ++j)
+    {
+        scanf("%s%d", tmp.id, &tmp.Gmid);
+        strcpy(all[tmp.id].id, tmp.id);
+        all[tmp.id].Gmid = tmp.Gmid;
+    }
+    for (int k = 0; k < n; ++k)
+    {
+        scanf("%s%d", tmp.id, &tmp.Gf);
+        strcpy(all[tmp.id].id, tmp.id);
+        all[tmp.id].Gf = tmp.Gf;
+    }
+
+    std::vector<stu> list;
+    for (const auto &item : all)
+    {
+        auto s = item.second;
+        if (s.Gp < 200)
+            continue;
+        if (s.Gmid > s.Gf)
+            s.G = round(0.4 * s.Gmid + 0.6 * s.Gf);
+        else
+            s.G = s.Gf;
+        if (s.G < 60)
+            continue;
+        list.push_back(std::move(s));
+    }
+
+    std::sort(list.begin(), list.end());
+
+    for (int i = 0; i < list.size(); ++i)
+    {
+        printf("%s %d %d %d %d\n", list[i].id, list[i].Gp, list[i].Gmid, list[i].Gf, list[i].G);
+
+    }
+
+}
+}
 
 
 
@@ -715,7 +1071,12 @@ int main(int argc, char **argv)
 //    basic_71::entry();
 //    basic_72::entry();
 //    basic_73::entry();
-    basic_74::entry();
+//    basic_74::entry();
+//    basic_75::entry();
+//    basic_76::entry();
+//    basic_77::entry();
+//    basic_78::entry();
+//    basic_79::entry();
+    basic_80::entry();
     return 0;
-
 }
