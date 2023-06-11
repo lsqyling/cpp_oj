@@ -1054,6 +1054,65 @@ void entry()
 }
 }
 
+namespace basic_81 {
+
+using std::string;
+
+void entry()
+{
+    int n;
+    string line;
+    std::cin >> n;
+    getchar();
+    for (int i = 0; i < n; ++i)
+    {
+        std::getline(std::cin, line);
+        if (line.size() < 6)
+            std::cout << "Your password is tai duan le." << std::endl;
+        else
+        {
+
+            bool has_alpha = false;
+            bool has_digit = false;
+            bool exist_illegal = false;
+
+            for (int j = 0; j < line.size(); ++j)
+            {
+                if (('A' <= line[j] && line[j] <= 'Z')
+                    || ('a' <= line[j] && line[j] <= 'z'))
+                {
+                    has_alpha = true;
+                }
+                else if ('0' <= line[j] && line[j] <= '9')
+                {
+                    has_digit = true;
+                }
+                else if (line[j] != '.')
+                {
+                    exist_illegal = true;
+                }
+            }
+            if (exist_illegal)
+            {
+                std::cout << "Your password is tai luan le." << std::endl;
+            }
+            else if (has_digit && has_alpha)
+            {
+                std::cout << "Your password is wan mei." << std::endl;
+            }
+            else if (!has_digit && has_alpha)
+            {
+                std::cout << "Your password needs shu zi." << std::endl;
+            }
+            else
+            {
+                std::cout << "Your password needs zi mu." << std::endl;
+            }
+        }
+    }
+}
+}
+
 
 
 int main(int argc, char **argv)
@@ -1077,6 +1136,7 @@ int main(int argc, char **argv)
 //    basic_77::entry();
 //    basic_78::entry();
 //    basic_79::entry();
-    basic_80::entry();
+//    basic_80::entry();
+    basic_81::entry();
     return 0;
 }
