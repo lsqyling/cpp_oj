@@ -1113,6 +1113,189 @@ void entry()
 }
 }
 
+namespace basic_82 {
+
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    int id, x, y, max_id, min_id;
+    double max = 0, min = 0x3fff'ffff;
+    double dist;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d%d%d", &id, &x, &y);
+        dist = 1.0 * x * x + 1.0 * y * y;
+        if (dist > max)
+        {
+            max = dist;
+            max_id = id;
+        }
+        if (dist < min)
+        {
+            min = dist;
+            min_id = id;
+        }
+    }
+
+    printf("%04d %04d\n", min_id, max_id);
+}
+}
+
+namespace basic_83 {
+constexpr int N = 10'005;
+
+int table[N];
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    memset(table, -1, sizeof(table));
+    for (int i = 1; i <= n; ++i)
+    {
+        int up = i, down;
+        scanf("%d", &down);
+        int c = up >= down ? up - down : down - up;
+        table[c]++;
+    }
+    for (int j = n; j >= 0; --j)
+    {
+        if (table[j] > 0)
+        {
+            printf("%d %d\n", j, table[j] + 1);
+        }
+    }
+
+}
+}
+
+namespace basic_84 {
+constexpr int N = 45;
+
+std::vector<int> seq[N];
+
+void entry()
+{
+    int d, n;
+    scanf("%d%d", &d, &n);
+    seq[1].push_back(d);
+    for (int k = 2; k <= n; ++k)
+    {
+        for (int i = 0, j = 0; j < seq[k - 1].size();)
+        {
+            while (j < seq[k - 1].size() && seq[k - 1][j] == seq[k - 1][i])
+                ++j;
+
+            int t = j - i;
+            int x = seq[k - 1][i];
+            seq[k].push_back(x);
+            seq[k].push_back(t);
+
+            i = j;
+        }
+    }
+
+    for (int i = 0; i < seq[n].size(); ++i)
+    {
+        printf("%d", seq[n][i]);
+    }
+
+}
+}
+
+namespace basic_85 {
+struct sch
+{
+    char name[8];
+    int num;
+    int score;
+    double total_score;
+    int total_score_;
+    sch() : name{'\0'}, num(1), score(0), total_score(0), total_score_(0) {}
+};
+
+bool operator<(const sch &a, const sch &b)
+{
+    if (a.total_score_ != b.total_score_)
+        return a.total_score_ > b.total_score_;
+    else if (a.num != b.num)
+        return a.num < b.num;
+    else
+        return strcmp(a.name, b.name) < 0;
+}
+
+
+
+std::map<std::string, sch> table;
+
+void to_lower_str(char str[])
+{
+    int len = strlen(str);
+    for (int i = 0; i < len; ++i)
+    {
+        str[i] = tolower(str[i]);
+    }
+}
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    char id[10];
+    for (int i = 0; i < n; ++i)
+    {
+        sch tmp;
+        scanf("%s%d%s", id, &tmp.score, tmp.name);
+        to_lower_str(tmp.name);
+        switch (id[0])
+        {
+            case 'A':
+                tmp.total_score += tmp.score;
+                break;
+            case 'B':
+                tmp.total_score += 1.0 * tmp.score / 1.5;
+                break;
+            case 'T':
+                tmp.total_score += 1.0 * tmp.score * 1.5;
+                break;
+            default:
+                exit(1);
+        }
+        auto it = table.find(tmp.name);
+        if (it != table.end())
+        {
+            ++table[tmp.name].num;
+            table[tmp.name].total_score += tmp.total_score;
+        }
+        else
+        {
+            table[tmp.name] = tmp;
+        }
+    }
+
+    std::vector<sch> list;
+    for (auto &item : table)
+    {
+        auto &s = item.second;
+        s.total_score_ = floor(s.total_score);
+        list.push_back(s);
+    }
+
+    std::sort(list.begin(), list.end());
+
+
+    printf("%zu\n", list.size());
+    int r = 1;
+    for (int j = 0; j < list.size(); ++j)
+    {
+        if (j > 0 && list[j].total_score_ != list[j-1].total_score_)
+            r = j + 1;
+        printf("%d %s %d %d\n", r, list[j].name, list[j].total_score_, list[j].num);
+    }
+}
+}
 
 
 int main(int argc, char **argv)
@@ -1137,6 +1320,10 @@ int main(int argc, char **argv)
 //    basic_78::entry();
 //    basic_79::entry();
 //    basic_80::entry();
-    basic_81::entry();
+//    basic_81::entry();
+//    basic_82::entry();
+//    basic_83::entry();
+//    basic_84::entry();
+    basic_85::entry();
     return 0;
 }
