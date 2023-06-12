@@ -1297,6 +1297,73 @@ void entry()
 }
 }
 
+namespace basic_86 {
+constexpr int N = 35;
+
+int digit[N], len;
+
+void convert(int n, int radix)
+{
+    len = 0;
+    do
+    {
+        digit[len++] = n % radix;
+        n /= radix;
+    } while (n);
+}
+
+
+void entry()
+{
+    int a, b;
+    scanf("%d%d", &a, &b);
+    int c = a * b;
+    convert(c, 10);
+    int i = 0;
+    while (i < len - 1 && digit[i] == 0)
+        ++i;
+    for (; i < len; ++i)
+    {
+        printf("%d", digit[i]);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int main(int argc, char **argv)
 {
@@ -1324,6 +1391,7 @@ int main(int argc, char **argv)
 //    basic_82::entry();
 //    basic_83::entry();
 //    basic_84::entry();
-    basic_85::entry();
+//    basic_85::entry();
+    basic_86::entry();
     return 0;
 }
