@@ -1564,8 +1564,82 @@ void entry()
 }
 }
 
+namespace basic_92 {
+constexpr int N = 1005;
+
+int sell[N];
+
+void entry()
+{
+    int n, m, s;
+    scanf("%d%d", &n, &m);
+
+    int max_sells = 0;
+
+    for (int i = 0; i < m; ++i)
+    {
+        for (int j = 1; j <= n; ++j)
+        {
+            scanf("%d", &s);
+            sell[j] += s;
+            if (sell[j] > max_sells)
+            {
+                max_sells = sell[j];
+            }
+        }
+    }
+
+    std::vector<int> species;
+    for (int k = 1; k <= n; ++k)
+    {
+        if (sell[k] == max_sells)
+            species.push_back(k);
+    }
+
+    printf("%d\n", max_sells);
+    for (int i = 0; i < species.size(); ++i)
+    {
+        printf("%d", species[i]);
+        if (i < species.size() - 1)
+            printf(" ");
+    }
+}
+}
+
+namespace basic_93 {
+void entry()
+{
+    std::string a, b;
+    std::getline(std::cin, a);
+    std::getline(std::cin, b);
+
+    std::vector<char> set;
+    std::map<char, bool> table;
 
 
+    for (int i = 0; i < a.size(); ++i)
+    {
+        if (auto it = table.find(a[i]); it == table.end())
+        {
+            table[a[i]] = true;
+            set.push_back(a[i]);
+        }
+    }
+    for (int j = 0; j < b.size(); ++j)
+    {
+        if (auto it = table.find(b[j]); it == table.end())
+        {
+            table[b[j]] = true;
+            set.push_back(b[j]);
+        }
+    }
+
+    for (auto c : set)
+    {
+        printf("%c", c);
+    }
+}
+}
 
 
 int main(int argc, char **argv)
@@ -1600,6 +1674,8 @@ int main(int argc, char **argv)
 //    basic_88::entry();
 //    basic_89::entry();
 //    basic_90::entry();
-    basic_91::entry();
+//    basic_91::entry();
+//    basic_92::entry();
+    basic_93::entry();
     return 0;
 }
