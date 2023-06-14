@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <set>
 
 
 namespace basic_61 {
@@ -1437,15 +1438,79 @@ void entry()
 }
 
 namespace basic_90 {
+constexpr int N = 10'005;
+
+int serial_number(int id, int flag)
+{
+    static int index = 0;
+    static std::map<int, int> table;
+    if (auto it = table.find(id); it != table.end())
+    {
+        return table[id];
+    }
+    else
+    {
+        if (flag == 1)
+            table[id] = index;
+    }
+    return flag == 1 ? index++ : -1;
+}
+
+
+bool table[N][N];
+
+
+void entry()
+{
+    int n, m;
+    scanf("%d%d", &n, &m);
+    for (int i = 0; i < n; ++i)
+    {
+        int x, y;
+        scanf("%d%d", &x, &y);
+        int u = serial_number(x, 1);
+        int v = serial_number(y, 1);
+
+        table[u][v] = 1;
+        table[v][u] = 1;
+    }
 
 
 
+    for (int j = 0; j < m; ++j)
+    {
+        int k;
+        scanf("%d", &k);
+        std::vector<int> bag;
+        for (int i = 0; i < k; ++i)
+        {
+            int x;
+            scanf("%d", &x);
+            x = serial_number(x, 0);
+            if (x != -1)
+                bag.push_back(x);
+        }
+        bool flag = true;
+        for (int s = 0; s < bag.size(); ++s)
+        {
+            for (int t = s + 1; t < bag.size(); ++t)
+            {
 
-
-
-
-
-
+                int u = bag[s];
+                int v = bag[t];
+                if (table[u][v] || table[v][u])
+                {
+                    printf("No\n");
+                    flag = false;
+                    goto label;
+                }
+            }
+        }
+    label:
+        if (flag)
+            printf("Yes\n");
+    }
+}
 }
 
 
@@ -1484,6 +1549,7 @@ int main(int argc, char **argv)
 //    basic_86::entry();
 //    basic_87::entry();
 //    basic_88::entry();
-    basic_89::entry();
+//    basic_89::entry();
+    basic_90::entry();
     return 0;
 }
