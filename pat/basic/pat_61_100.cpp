@@ -1381,6 +1381,66 @@ void entry()
         printf(" %s", b >= M ? (b == M ? "Ping" : "Cong") : "Gai");
         printf(" %s", c >= M ? (c == M ? "Ping" : "Cong") : "Gai");
     }
+}
+}
+
+namespace basic_89 {
+constexpr int N = 105;
+
+int say[N];
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    for (int i = 1; i <= n; ++i)
+    {
+        scanf("%d", &say[i]);
+    }
+
+    for (int i = 1; i <= n; ++i)
+    {
+        for (int j = i + 1; j <= n; ++j)
+        {
+            std::map<int, bool> wolf;
+            wolf[i] = true;
+            wolf[j] = true;
+
+            int num_liar = 0, lie1, lie2;
+            for (int k = 1; k <= n; ++k)
+            {
+                int id = abs(say[k]);
+                if (((id == i || id == j) && say[k] > 0)
+                    || ((id != i && id != j) && say[k] < 0))
+                {
+                    ++num_liar;
+                    if (num_liar == 1)
+                        lie1 = k;
+                    else if (num_liar == 2)
+                        lie2 = k;
+                    else
+                        break;
+                }
+            }
+            if (num_liar == 2
+                && ((wolf[lie1] && !wolf[lie2]) || (!wolf[lie1] && wolf[lie2])))
+            {
+                printf("%d %d\n", i, j);
+                return;
+            }
+
+        }
+
+    }
+    printf("No Solution");
+}
+}
+
+namespace basic_90 {
+
+
+
+
 
 
 
@@ -1388,17 +1448,6 @@ void entry()
 
 }
 
-
-
-
-
-
-
-
-
-
-
-}
 
 
 
@@ -1434,6 +1483,7 @@ int main(int argc, char **argv)
 //    basic_85::entry();
 //    basic_86::entry();
 //    basic_87::entry();
-    basic_88::entry();
+//    basic_88::entry();
+    basic_89::entry();
     return 0;
 }
