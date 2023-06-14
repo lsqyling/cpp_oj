@@ -1513,7 +1513,56 @@ void entry()
 }
 }
 
+namespace basic_91 {
 
+bool is_automorphic_num(int a, int b)
+{
+    std::vector<int> num_a(12, 0);
+    std::vector<int> num_b(12, 0);
+    int len_a = 0;
+    int len_b = 0;
+    do
+    {
+        num_a[len_a++] = a % 10;
+        a /= 10;
+    } while (a);
+    do
+    {
+        num_b[len_b++] = b % 10;
+        b /= 10;
+    } while (b);
+    for (int i = 0; i < len_a; ++i)
+    {
+        if (num_a[i] != num_b[i])
+            return false;
+
+    }
+    return true;
+}
+
+
+
+void entry()
+{
+    int m, k;
+    scanf("%d", &m);
+    for (int i = 0; i < m; ++i)
+    {
+        scanf("%d", &k);
+        int n;
+        for (n = 1; n < 10; ++n)
+        {
+            if (is_automorphic_num(k, n * k * k))
+            {
+                printf("%d %d\n", n, n * k * k);
+                break;
+            }
+        }
+        if (n == 10)
+            printf("No\n");
+    }
+}
+}
 
 
 
@@ -1550,6 +1599,7 @@ int main(int argc, char **argv)
 //    basic_87::entry();
 //    basic_88::entry();
 //    basic_89::entry();
-    basic_90::entry();
+//    basic_90::entry();
+    basic_91::entry();
     return 0;
 }
