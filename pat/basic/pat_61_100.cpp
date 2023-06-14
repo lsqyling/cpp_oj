@@ -1327,17 +1327,60 @@ void entry()
         printf("%d", digit[i]);
     }
 }
+}
+
+namespace basic_87 {
+
+void entry()
+{
+    int N, m, m0 = -1, count = 0;
+    scanf("%d", &N);
+    for (int n = 1; n <= N; ++n)
+    {
+        m = n/2 + n/3 + n/5;
+        if (m > m0)
+            count++;
+        m0 = m;
+    }
+    printf("%d\n", count);
+}
+}
+
+namespace basic_88 {
+
+inline int convert(int a)
+{
+    int ones = a % 10;
+    int tens = a / 10;
+
+    return ones * 10 + tens;
+}
 
 
+void entry()
+{
+    int M, X, Y;
+    scanf("%d%d%d", &M, &X, &Y);
+    int a, b; double c;
+    for (a = 99; a >= 10; --a)
+    {
+        b = convert(a);
 
-
-
-
-
-
-
-
-
+        if (abs(a - b) * Y == b * X)
+        {
+            c = 1.0 * b / Y;
+            break;
+        }
+    }
+    if (a == 9)
+        printf("No Solution");
+    else
+    {
+        printf("%d", a);
+        printf(" %s", a >= M ? (a == M ? "Ping" : "Cong") : "Gai");
+        printf(" %s", b >= M ? (b == M ? "Ping" : "Cong") : "Gai");
+        printf(" %s", c >= M ? (c == M ? "Ping" : "Cong") : "Gai");
+    }
 
 
 
@@ -1355,10 +1398,7 @@ void entry()
 
 
 
-
-
-
-
+}
 
 
 
@@ -1392,6 +1432,8 @@ int main(int argc, char **argv)
 //    basic_83::entry();
 //    basic_84::entry();
 //    basic_85::entry();
-    basic_86::entry();
+//    basic_86::entry();
+//    basic_87::entry();
+    basic_88::entry();
     return 0;
 }
