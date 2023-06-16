@@ -1641,41 +1641,465 @@ void entry()
 }
 }
 
+namespace basic_94 {
+constexpr int N = 1005;
+
+bool is_prime(int n)
+{
+    if (n < 2)
+        return false;
+    int sqrt_n = sqrt(n);
+    for (int i = 2; i <= sqrt_n; ++i)
+    {
+        if (n % i == 0)
+            return false;
+    }
+    return true;
+}
+
+
+void entry()
+{
+    int L, K;
+    scanf("%d%d", &L, &K);
+    char str[N];
+    scanf("%s", str);
+    int n = strlen(str);
+    bool flag = false;
+    for (int j = 0; j <= n - K; ++j)
+    {
+        int sum = 0;
+        for (int i = j; i < j + K; ++i)
+            sum = sum * 10 + (str[i] - '0');
+        if (is_prime(sum))
+        {
+            for (int i = j; i < j + K; ++i)
+            {
+                printf("%c", str[i]);
+            }
+            flag = true;
+            break;
+        }
+    }
+
+    if (!flag)
+        printf("404");
+}
+}
+
+namespace basic_95 {
+struct stu
+{
+    int level;
+    int exam_id;
+    int date;
+
+    int score;
+
+    char id[15];
+};
+
+int convert_to_i(char str[], int left, int right)
+{
+    int sum = 0;
+    for (int i = left; i <= right; ++i)
+    {
+        sum = sum * 10 + (str[i] - '0');
+    }
+    return sum;
+}
+
+void parsing_info(stu &self)
+{
+    self.level = self.id[0];
+    self.exam_id = convert_to_i(self.id, 1, 3);
+    self.date = convert_to_i(self.id, 4, 9);
+}
+
+
+
+void entry()
+{
+    int n, m;
+    scanf("%d%d", &n, &m);
+    std::vector<stu> all;
+    stu tmp;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%s %d", tmp.id, &tmp.score);
+        parsing_info(tmp);
+        all.push_back(tmp);
+    }
+
+    for (int j = 1; j <= m; ++j)
+    {
+        int type, command;
+        scanf("%d", &type);
+        if (type == 1)
+        {
+            getchar();
+            command = getchar();
+        }
+        else
+            scanf("%d", &command);
+
+        if (type == 1)
+        {
+            printf("Case %d: %d %c\n", j, type, command);
+            auto cmp = [](const stu &a, const stu &b)
+            {
+                if (a.level != b.level)
+                    return a.level < b.level;
+                else if (a.score != b.score)
+                    return a.score > b.score;
+                else
+                    return strcmp(a.id, b.id) < 0;
+            };
+            std::sort(all.begin(), all.end(), cmp);
+            int cnt = 0;
+            for (int i = 0; i < n; ++i)
+            {
+                if (all[i].level == command)
+                {
+                    ++cnt;
+                    printf("%s %d\n", all[i].id, all[i].score);
+                }
+            }
+            if (cnt == 0)
+                printf("NA\n");
+        }
+        else if (type == 2)
+        {
+            printf("Case %d: %d %03d\n", j, type, command);
+            int count = 0, total = 0;
+            for (int i = 0; i < n; ++i)
+            {
+                if (all[i].exam_id == command)
+                {
+                    ++count;
+                    total += all[i].score;
+                }
+            }
+
+            if (count > 0)
+            {
+                printf("%d %d\n", count, total);
+            }
+            else
+                printf("NA\n");
+        }
+        else if (type == 3)
+        {
+            printf("Case %d: %d %06d\n", j, type, command);
+            struct exam_info
+            {
+                int exam_id;
+                int count;
+                exam_info() : exam_id(0), count(0) {}
+            };
+            std::map<int, exam_info> mps;
+            for (int i = 0; i < n; ++i)
+            {
+                if (all[i].date == command)
+                {
+                    mps[all[i].exam_id].count++;
+                    mps[all[i].exam_id].exam_id = all[i].exam_id;
+                }
+            }
+            std::vector<exam_info> list;
+            for (const auto &item : mps)
+            {
+                list.push_back(item.second);
+            }
+            auto cmp = [](const exam_info &a, const exam_info &b)
+            {
+                if (a.count != b.count)
+                    return a.count > b.count;
+                else
+                    return a.exam_id < b.exam_id;
+            };
+            std::sort(list.begin(), list.end(), cmp);
+            for (int k = 0; k < list.size(); ++k)
+            {
+                printf("%03d %d\n", list[k].exam_id, list[k].count);
+            }
+            if (list.empty())
+                printf("NA\n");
+        }
+    }
+}
+}
+
+namespace basic_96 {
+
+void factor(std::vector<int> &factors, int n)
+{
+    for (int i = 1; i <= n/2; ++i)
+    {
+        if (n % i == 0)
+            factors.push_back(i);
+    }
+}
+
+void combination(const std::vector<int> &a, int n, int m, std::vector<int> &b, int M, bool &flag, int val)
+{
+    if (m == 0)
+    {
+        int sum = 0;
+        for (int i = 0; i < M; ++i)
+        {
+            sum += b[i];
+        }
+        if (val % sum == 0)
+            flag = true;
+        return ;
+    }
+    for (int j = n; j >= m; --j)
+    {
+        b[m-1] = a[j-1];
+        combination(a, j-1, m-1, b, M, flag, val);
+    }
+}
+
+void entry()
+{
+    int k;
+    scanf("%d", &k);
+    for (int i = 0; i < k; ++i)
+    {
+        std::vector<int> factors;
+        std::vector<int> ans(4, 0);
+        int n;
+        scanf("%d", &n);
+        factor(factors, n);
+        bool flag = false;
+        combination(factors, factors.size(), 4, ans, 4, flag, n);
+        printf("%s\n", flag ? "Yes" : "No");
+    }
+}
+}
+
+namespace basic_97 {
+constexpr int N = 105;
+
+int matrix[N][N];
+
+void entry()
+{
+    int n, k, x;
+    scanf("%d%d%d", &n, &k, &x);
+    for (int i = 1; i <= n; ++i)
+    {
+        for (int j = 1; j <= n; ++j)
+        {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+
+    for (int i = 1, t = 1; i <= n; i += 2,++t)
+    {
+        int md, d;
+        md = d = (t % k == 0 ? k : t % k);
+        while (md--)
+        {
+            for (int j = n; j > 1; --j)
+            {
+                matrix[i][j] = matrix[i][j-1];
+            }
+        }
+        for (int j = 1; j <= d; ++j)
+        {
+            matrix[i][j] = x;
+        }
+    }
+
+
+
+    for (int j = 1; j <= n; ++j)
+    {
+        int sum = 0;
+        for (int i = 1; i <= n; ++i)
+        {
+            sum += matrix[i][j];
+        }
+        printf("%d", sum);
+        if (j < n)
+            printf(" ");
+    }
+}
+}
+
+namespace basic_98 {
+
+
+void entry()
+{
+    int n, tmp;
+    scanf("%d", &n);
+    int up_min = 1005;
+    int down_max = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d", &tmp);
+        if (tmp < up_min)
+            up_min = tmp;
+    }
+    for (int j = 0; j < n; ++j)
+    {
+        scanf("%d", &tmp);
+        if (tmp > down_max)
+            down_max = tmp;
+    }
+
+    if (up_min - down_max >= 1)
+        printf("Yes %d", up_min - down_max);
+    else
+        printf("No %d", down_max - up_min + 1);
+
+}
+}
+
+namespace basic_99 {
+
+bool is_prime(int n)
+{
+    if (n < 2)
+        return false;
+    int sqrt_n = sqrt(n);
+    for (int i = 2; i <= sqrt_n; ++i)
+    {
+        if (n % i == 0)
+            return false;
+    }
+    return true;
+}
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    if (is_prime(n) && (is_prime(n-6) || is_prime(n+6)))
+    {
+        printf("Yes\n");
+        printf("%d\n", (is_prime(n-6) ? n - 6 : n + 6));
+    }
+    else
+    {
+        printf("No\n");
+        for (int j = n + 1; ; ++j)
+        {
+            if (is_prime(j) && (is_prime(j-6) || is_prime(j+6)))
+            {
+                printf("%d\n", j);
+                break;
+            }
+        }
+    }
+}
+}
+
+namespace basic_100 {
+
+std::set<std::string> alumnus;
+
+int parsing_date(const std::string &id, int i, int j)
+{
+    int sum = 0;
+    for (int k = i; k <= j; ++k)
+    {
+        sum = sum * 10 + (id[k] - '0');
+    }
+    return sum;
+}
+
+
+
+void entry()
+{
+    int n;
+    std::cin >> n;
+    std::string id;
+    for (int i = 0; i < n; ++i)
+    {
+        std::cin >> id;
+        alumnus.insert(id);
+    }
+    int m;
+    std::cin >> m;
+    int old_guest = 0x3fff'ffff, old_alumni = 0x3fff'ffff;
+    std::string old_alumni_id, old_guest_id;
+    int count = 0;
+    for (int j = 0; j < m; ++j)
+    {
+        std::cin >> id;
+        int date = parsing_date(id, 6, 13);
+        if (auto it = alumnus.find(id); it != alumnus.end())
+        {
+            if (date < old_alumni)
+            {
+                old_alumni = date;
+                old_alumni_id = id;
+            }
+            ++count;
+        }
+        else
+        {
+            if (date < old_guest)
+            {
+                old_guest = date;
+                old_guest_id = id;
+            }
+        }
+    }
+    std::cout << count << std::endl;
+    if (count > 0)
+        std::cout << old_alumni_id << std::endl;
+    else
+        std::cout << old_guest_id << std::endl;
+}
+}
 
 int main(int argc, char **argv)
 {
-//    basic_61::entry();
-//    basic_62::entry();
-//    basic_63::entry();
-//    basic_64::entry();
-//    basic_65::entry();
-//    basic_66::entry();
-//    basic_67::entry();
-//    basic_68::entry();
-//    basic_69::entry();
-//    basic_70::entry();
-//    basic_71::entry();
-//    basic_72::entry();
-//    basic_73::entry();
-//    basic_74::entry();
-//    basic_75::entry();
-//    basic_76::entry();
-//    basic_77::entry();
-//    basic_78::entry();
-//    basic_79::entry();
-//    basic_80::entry();
-//    basic_81::entry();
-//    basic_82::entry();
-//    basic_83::entry();
-//    basic_84::entry();
-//    basic_85::entry();
-//    basic_86::entry();
-//    basic_87::entry();
-//    basic_88::entry();
-//    basic_89::entry();
-//    basic_90::entry();
-//    basic_91::entry();
-//    basic_92::entry();
+    basic_61::entry();
+    basic_62::entry();
+    basic_63::entry();
+    basic_64::entry();
+    basic_65::entry();
+    basic_66::entry();
+    basic_67::entry();
+    basic_68::entry();
+    basic_69::entry();
+    basic_70::entry();
+    basic_71::entry();
+    basic_72::entry();
+    basic_73::entry();
+    basic_74::entry();
+    basic_75::entry();
+    basic_76::entry();
+    basic_77::entry();
+    basic_78::entry();
+    basic_79::entry();
+    basic_80::entry();
+    basic_81::entry();
+    basic_82::entry();
+    basic_83::entry();
+    basic_84::entry();
+    basic_85::entry();
+    basic_86::entry();
+    basic_87::entry();
+    basic_88::entry();
+    basic_89::entry();
+    basic_90::entry();
+    basic_91::entry();
+    basic_92::entry();
     basic_93::entry();
+    basic_94::entry();
+    basic_95::entry();
+    basic_96::entry();
+    basic_97::entry();
+    basic_98::entry();
+    basic_99::entry();
+    basic_100::entry();
     return 0;
 }
