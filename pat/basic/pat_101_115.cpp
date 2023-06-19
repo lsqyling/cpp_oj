@@ -288,6 +288,150 @@ void entry()
 }
 }
 
+namespace basic_106 {
+constexpr int N = 1005;
+
+int num[N] = {2, 0, 1, 9};
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+
+    for (int i = 0, j; i <= n - 4; ++i)
+    {
+        int sum = 0;
+        for (j = i; j < i + 4; ++j)
+        {
+            sum += num[j];
+        }
+        num[j] = sum % 10;
+    }
+    for (int k = 0; k < n; ++k)
+    {
+        printf("%d", num[k]);
+    }
+}
+}
+
+namespace basic_107 {
+
+void entry()
+{
+    int n, m;
+    scanf("%d%d", &n, &m);
+    int max = 0, w;
+    for (int i = 0; i < n; ++i)
+    {
+        int max_group = 0;
+        for (int j = 0; j < m; ++j)
+        {
+            scanf("%d", &w);
+            if (w > max_group)
+                max_group = w;
+
+        }
+        if (max_group > max)
+            max = max_group;
+        printf("%d", max_group);
+        if (i < n-1)
+            printf(" ");
+    }
+    printf("\n%d", max);
+}
+}
+
+namespace basic_108 {
+const char OUT[6] = {'S', 't', 'r', 'i', 'n', 'g'};
+
+int table[6];
+
+void entry()
+{
+    char str[10'005];
+    scanf("%s", str);
+
+    int len = strlen(str);
+    int sum = 0;
+    for (int i = 0; i < len; ++i)
+    {
+        for (int j = 0; j < 6; ++j)
+        {
+            if (str[i] == OUT[j])
+            {
+                ++table[j];
+                ++sum;
+            }
+        }
+    }
+
+    while (sum > 0)
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            if (table[i] > 0)
+            {
+                printf("%c", OUT[i]);
+                --table[i];
+                --sum;
+            }
+        }
+    }
+}
+}
+
+namespace basic_109 {
+
+void entry()
+{
+    std::vector<std::string> w;
+    std::string str;
+    for (int i = 0; i < 26; ++i)
+    {
+        for (int j = 0; j < 7; ++j)
+        {
+            std::getline(std::cin, str);
+            w.push_back(str);
+        }
+    }
+
+    std::getline(std::cin, str);
+    std::vector<std::string> res;
+    for (int i = 0; i < str.size(); ++i)
+    {
+        while (i < str.size() && !isupper(str[i]))
+        {
+            ++i;
+            continue;
+        }
+        int j = i;
+        while (j < str.size() && isupper(str[j]))
+            ++j;
+        res.push_back(str.substr(i, j-i));
+        i = j;
+    }
+
+    for (int i = 0; i < res.size(); ++i)
+    {
+        auto word = res[i];
+        for (int j = 0; j < 7; ++j)
+        {
+            for (int k = 0; k < word.size(); ++k)
+            {
+                if (k > 0)
+                    printf(" ");
+                auto u = word[k] - 'A';
+                std::cout << w[u*7+j];
+            }
+            std::cout << std::endl;
+        }
+        if (i < res.size() - 1)
+            std::cout << std::endl;
+    }
+}
+}
+
+
 
 
 int main(int argc, char **argv)
@@ -296,6 +440,10 @@ int main(int argc, char **argv)
 //    basic_102::entry();
 //    basic_103::entry();
 //    basic_104::entry();
-    basic_105::entry();
+//    basic_105::entry();
+//    basic_106::entry();
+//    basic_107::entry();
+//    basic_108::entry();
+    basic_109::entry();
     return 0;
 }
