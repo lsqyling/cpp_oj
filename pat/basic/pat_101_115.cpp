@@ -431,7 +431,208 @@ void entry()
 }
 }
 
+namespace basic_110 {
+constexpr int N = 100'005;
+struct node
+{
+    int adr, data, next;
+};
 
+node list[N];
+
+int reverse_list(int head)
+{
+    if (head == -1 || list[head].next == -1)
+        return head;
+    int pre = -1, cur = head;
+    while (cur != -1)
+    {
+        auto next = list[cur].next;
+
+        list[cur].next = pre;
+        pre = cur;
+        cur = next;
+    }
+
+    return pre;
+}
+
+int reverse_of_knodes(int head, int k, int n)
+{
+    static bool first_entry = true;
+    if (head == -1 || list[head].next == -1 || k < 2)
+        return head;
+    int tail = head;
+    int K = k;
+    if (first_entry)
+    {
+        K = n % k;
+        first_entry = false;
+    }
+    for (int i = 0; i < K; ++i)
+    {
+        if (tail == -1)
+            break;
+        tail = list[tail].next;
+    }
+    K = k;
+
+    int pre = -1, cur = head;
+    while (cur != tail)
+    {
+        auto next = list[cur].next;
+
+        list[cur].next = pre;
+        pre = cur;
+        cur = next;
+    }
+    list[head].next = reverse_of_knodes(tail, K, n);
+    return pre;
+}
+
+void print_list(int head)
+{
+    int cur = head;
+    while (cur != -1)
+    {
+        printf("%d->", list[cur].data);
+        cur = list[cur].next;
+    }
+    printf("\n");
+}
+
+int size(int head)
+{
+    int num = 0;
+    int cur = head;
+    while (cur != -1)
+    {
+        ++num;
+        cur = list[cur].next;
+    }
+    return num;
+}
+
+void entry()
+{
+    int h, n, k;
+    scanf("%d%d%d", &h, &n, &k);
+    int adr, data, next;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d%d%d", &adr, &data, &next);
+        list[adr].adr = adr;
+        list[adr].data = data;
+        list[adr].next = next;
+    }
+
+    h = reverse_list(h);
+//    print_list(h);
+    n = size(h);
+    h = reverse_of_knodes(h, k, n);
+//    print_list(h);
+    int cur = h;
+    while (list[cur].next != -1)
+    {
+        printf("%05d %d %05d\n", list[cur].adr, list[cur].data, list[cur].next);
+        cur = list[cur].next;
+    }
+    printf("%05d %d -1", list[cur].adr, list[cur].data);
+}
+
+
+
+
+
+
+
+}
+
+namespace basic_110_b {
+constexpr int N = 100'005;
+
+struct node
+{
+    int adr, data, next;
+};
+
+node list[N];
+
+void entry()
+{
+    int h, n, k;
+    scanf("%d%d%d", &h, &n, &k);
+    int adr, data, next;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d%d%d", &adr, &data, &next);
+        list[adr].adr = adr;
+        list[adr].data = data;
+        list[adr].next = next;
+    }
+    std::vector<node> nodes;
+    int cur = h;
+    while (cur != -1)
+    {
+        nodes.push_back(list[cur]);
+        cur = list[cur].next;
+    }
+    std::reverse(nodes.begin(), nodes.end());
+    int K = nodes.size() % k;
+    for (int j = 0; j*k + K <= nodes.size(); ++j)
+    {
+        if (j == 0)
+            std::reverse(nodes.begin(), nodes.begin() + K);
+        else
+            std::reverse(nodes.begin() + K + (j-1)*k, nodes.begin() + K + j * k);
+
+    }
+
+    int i;
+    for (i = 0; i < nodes.size() - 1; ++i)
+    {
+        printf("%05d %d %05d\n", nodes[i].adr, nodes[i].data, nodes[i+1].adr);
+    }
+    printf("%05d %d -1", nodes[i].adr, nodes[i].data);
+}
+}
+
+namespace basic_111 {
+using std::string;
+using std::map;
+
+const map<string, int> MON{{"Jan", 1}, {"Feb", 2}, {"Mar", 3}, {"Apr", 4},
+                           {"May", 5}, {"Jun", 6}, {"Jul", 7}, {"Aug", 8},
+                           {"Sep", 9}, {"Oct", 10}, {"Nov", 11}, {"Dec", 12}};
+bool is_symmetry(char *str)
+{
+    int len = strlen(str);
+    for (int i = 0, j = len - 1; i < j; ++i, --j)
+    {
+        if (str[i] != str[j])
+            return false;
+    }
+    return true;
+}
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    char month[5];
+    int day, year;
+    char date[10];
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%s %d, %d", month, &day, &year);
+        sprintf(date, "%04d%02d%02d", year, MON.at(month), day);
+        if (is_symmetry(date))
+            printf("Y %s\n", date);
+        else
+            printf("N %s\n", date);
+    }
+}
+}
 
 
 int main(int argc, char **argv)
@@ -444,6 +645,10 @@ int main(int argc, char **argv)
 //    basic_106::entry();
 //    basic_107::entry();
 //    basic_108::entry();
-    basic_109::entry();
+//    basic_109::entry();
+//    basic_110::entry();
+//    basic_110_b::entry();
+
+    basic_111::entry();
     return 0;
 }
