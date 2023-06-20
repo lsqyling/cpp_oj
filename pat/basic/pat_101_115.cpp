@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <map>
 #include <cmath>
+#include <set>
 
 namespace basic_101 {
 
@@ -490,16 +491,6 @@ int reverse_of_knodes(int head, int k, int n)
     return pre;
 }
 
-void print_list(int head)
-{
-    int cur = head;
-    while (cur != -1)
-    {
-        printf("%d->", list[cur].data);
-        cur = list[cur].next;
-    }
-    printf("\n");
-}
 
 int size(int head)
 {
@@ -634,21 +625,264 @@ void entry()
 }
 }
 
+namespace basic_112 {
+
+void entry()
+{
+    int n, K;
+    scanf("%d%d", &n, &K);
+    int y, left = -1, right;
+    int max = 0;
+//    是否有数据超标
+    bool flag1 = false;
+//    当前区间是否已经完全输出
+    bool flag2 = false;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d", &y);
+        if (y > max)
+            max = y;
+        if (y > K && !flag2)
+        {
+            left = i;
+            flag1 = true;
+            flag2 = true;
+        }
+        if (y <= K && flag2)
+        {
+            right = i - 1;
+            printf("[%d, %d]\n", left, right);
+            flag2 = false;
+        }
+    }
+    if (!flag1)
+        printf("%d", max);
+    if (flag2)
+    {
+        right = n - 1;
+        printf("[%d, %d]", left, right);
+    }
+
+
+}
+}
+
+namespace basic_113 {
+using std::string;
+void entry()
+{
+    string a, b;
+    std::cin >> a >> b;
+    int n;
+    if (a.size() > b.size())
+    {
+        n = a.size() - b.size();
+        while (n--)
+            b.insert(0, "0");
+    }
+    else if (b.size() > a.size())
+    {
+        n = b.size() - a.size();
+        while (n--)
+            a.insert(0, "0");
+    }
+
+    int r = 0;
+    string ans;
+    for (int i = a.size() - 1; i >= 0; --i)
+    {
+        int s, t;
+        char c1 = a[i], c2 = b[i];
+        if ('a' <= c1 && c1 <= 't')
+            s = c1 - 'a' + 10;
+        else
+            s = c1 - '0';
+        if ('a' <= c2 && c2 <= 't')
+            t = c2 - 'a' + 10;
+        else
+            t = c2 - '0';
+        int d = (r + s + t) % 30;
+        r = (r + s + t) / 30;
+        char dc = d > 9 ? d - 10 + 'a' : d + '0';
+
+        ans.insert(0, 1, dc);
+    }
+    if (r)
+    {
+        int d = r % 30;
+        char dc = d > 9 ? d - 10 + 'a' : d + '0';
+        ans.insert(0, 1, dc);
+    }
+    int i = 0;
+    while (i < ans.size() - 1 && ans[i] == '0')
+        ++i;
+    ans.erase(0, i);
+
+    std::cout << ans << std::endl;
+}
+}
+
+namespace basic_114 {
+bool is_prime(int n)
+{
+    if (n < 2)
+        return false;
+    int sqrt_n = sqrt(n);
+    for (int i = 2; i <= sqrt_n; ++i)
+    {
+        if (n % i == 0)
+            return false;
+    }
+    return true;
+}
+
+int value_of(char *str, int left, int right)
+{
+    int sum = 0;
+    for (int i = left; i < right; ++i)
+    {
+        sum = sum * 10 + (str[i] - '0');
+    }
+    return sum;
+}
+
+void entry()
+{
+    char str[10];
+    scanf("%s", str);
+    int len = strlen(str);
+    bool flag = true;
+    for (int i = 0; i < len; ++i)
+    {
+        printf("%s", str + i);
+        if (is_prime(value_of(str, i, len)))
+            printf(" Yes\n");
+        else
+        {
+            printf(" No\n");
+            flag = false;
+        }
+    }
+
+    if (flag)
+        printf("All Prime!");
+}
+}
+
+namespace basic_115 {
+constexpr int N = 100'005;
+bool table[N];
+bool row_valid[15];
+std::set<int> buf;
+
+bool has_two_numbers_equal_x(int sum)
+{
+    auto it = buf.find(sum);
+    return it != buf.end();
+}
+
+void update_buf(const std::vector<int> &nums)
+{
+    for (int i = 0, j = nums.size()-1; i < j; ++i)
+    {
+        int d = abs(nums[i] - nums[j]);
+        buf.insert(d);
+    }
+}
+
+void entry()
+{
+    int m, n;
+    scanf("%d%d", &m, &n);
+    int row, col;
+    scanf("%d%d", &row, &col);
+    table[m] = true;
+    table[n] = true;
+    memset(row_valid, true, sizeof(row_valid));
+    int data[row][col];
+    int x;
+    for (int i = 0; i < row; ++i)
+    {
+        for (int j = 0; j < col; ++j)
+        {
+            scanf("%d", &x);
+            data[i][j] = x;
+        }
+    }
+
+    std::vector<int> nums;
+    nums.push_back(m);
+    nums.push_back(n);
+    update_buf(nums);
+    int winners = row;
+    for (int j = 0, i; j < col; ++j)
+    {
+        for (i = 0; i < row; ++i)
+        {
+            bool flag = false;
+            if (!row_valid[i])
+                continue;
+            int cur = data[i][j];
+            if (table[cur])
+            {
+                row_valid[i] = false;
+                flag = true;
+                --winners;
+            }
+            else if (!has_two_numbers_equal_x(cur))
+            {
+                row_valid[i] = false;
+                flag = true;
+                --winners;
+            }
+            else
+            {
+                nums.push_back(cur);
+                update_buf(nums);
+                table[cur] = true;
+            }
+            if (flag)
+                printf("Round #%d: %d is out.\n", j+1, i+1);
+        }
+
+    }
+    if (winners > 0)
+    {
+        printf("Winner(s):");
+        for (int i = 0; i < row; ++i)
+        {
+            if (row_valid[i])
+                printf(" %d", i+1);
+        }
+
+    }
+    else
+        printf("No winner.");
+
+}
+
+
+
+}
+
 
 int main(int argc, char **argv)
 {
-//    basic_101::entry();
-//    basic_102::entry();
-//    basic_103::entry();
-//    basic_104::entry();
-//    basic_105::entry();
-//    basic_106::entry();
-//    basic_107::entry();
-//    basic_108::entry();
-//    basic_109::entry();
-//    basic_110::entry();
-//    basic_110_b::entry();
-
+    basic_101::entry();
+    basic_102::entry();
+    basic_103::entry();
+    basic_104::entry();
+    basic_105::entry();
+    basic_106::entry();
+    basic_107::entry();
+    basic_108::entry();
+    basic_109::entry();
+    basic_110::entry();
+    basic_110_b::entry();
     basic_111::entry();
+    basic_112::entry();
+    basic_113::entry();
+    basic_114::entry();
+    basic_115::entry();
     return 0;
 }
