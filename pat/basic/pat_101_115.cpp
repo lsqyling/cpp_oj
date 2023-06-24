@@ -860,10 +860,10 @@ void entry()
         printf("No winner.");
 
 }
-
-
-
 }
+
+
+
 
 
 int main(int argc, char **argv)
