@@ -1,5 +1,11 @@
 #include <cstdio>
 #include <cstring>
+#include <vector>
+#include <queue>
+
+
+
+
 
 namespace advanced_170 {
 
@@ -66,20 +72,57 @@ void entry()
 
 namespace advanced_171 {
 
+const int N = 100'005;
+int num[N];
+
 void entry()
 {
+    int n, m;
+    std::vector<int> current, next;
+    std::priority_queue<int, std::vector<int>, std::greater<int>> Q;
+    scanf("%d%d", &n, &m);
+    for (int i = 0; i < n; i++)
+        scanf("%d", &num[i]);
+    int index = 0, count = 0, last;
+    for (; index < m; index++)
+        Q.push(num[index]);
+    while (count != n)
+    {
+        last = Q.top();
+        current.push_back(last);
+        Q.pop();
+        count++;
+        if (index < n)
+        {
+            if (last < num[index])
+            {
+                Q.push(num[index++]);
+            }
+            else
+            {
+                next.push_back(num[index++]);
+            }
+        }
+        if (Q.empty())
+        {
+            //输出当前
+            for (int i = 0; i < current.size(); i++)
+            {
+                if (i != 0)printf(" ");
+                printf("%d", current[i]);
+            }
+            printf("\n");
+            current.clear();
+            //
+            for (int i = 0; i < next.size(); i++)
+            {
+                Q.push(next[i]);
+            }
+            next.clear();
 
-    
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
 }
 
 
@@ -88,7 +131,8 @@ void entry()
 
 int main(int argc, char **argv)
 {
-    advanced_170::entry();
+//    advanced_170::entry();
+    advanced_171::entry();
 
 
 
