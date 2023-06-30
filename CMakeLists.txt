@@ -30,7 +30,7 @@ endif ()
 file(GLOB_RECURSE src_list
         LIST_DIRECTORIES false
         RELATIVE ${CMAKE_CURRENT_LIST_DIR}
-        pat/*.cpp pat/*.c)
+        pat/*.cpp pat/*.c zoj/*.c zoj/*.cpp)
 
 foreach (_v ${src_list})
     string(REGEX REPLACE pat/ "" _name ${_v})
