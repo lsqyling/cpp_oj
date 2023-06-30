@@ -181,6 +181,38 @@ void entry()
 }
 }
 
+namespace self_5 {
+const char symbol[5] = {'S', 'H', 'C', 'D', 'J'};
+constexpr int N = 55;
+
+void entry()
+{
+    int k;
+    scanf("%d", &k);
+    int cards[N], shuffle[N];
+    for (int j = 1; j < N; ++j)
+    {
+        scanf("%d", &shuffle[j]);
+        cards[j] = j;
+    }
+    int tmp[N];
+    while (k--)
+    {
+        for (int i = 1; i < N; ++i)
+            tmp[shuffle[i]] = cards[i];
+        for (int j = 1; j < N; ++j)
+            cards[j] = tmp[j];
+    }
+
+    for (int i = 1; i < N; ++i)
+    {
+        if (i != 1)
+            printf(" ");
+        printf("%c%d", symbol[(cards[i]-1)/13], (cards[i]-1)%13+1);
+    }
+}
+}
+
 
 
 
@@ -192,6 +224,7 @@ int main(int argc, char **argv)
 //    self_1::entry();
 //    self_2::entry();
 //    self_3::entry();
-    self_4::entry();
+//    self_4::entry();
+    self_5::entry();
     return 0;
 }
