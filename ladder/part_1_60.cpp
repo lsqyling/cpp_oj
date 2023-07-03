@@ -2,6 +2,7 @@
 #include <set>
 #include <queue>
 #include <algorithm>
+#include <cstring>
 
 
 namespace L2_005 {
@@ -231,7 +232,47 @@ void entry()
 }
 }
 
+namespace L2_008 {
+constexpr int N = 1005;
 
+char S[N];
+bool dp[N][N];
+void entry()
+{
+    fgets(S, sizeof(S), stdin);
+    int len = strlen(S);
+    memset(dp, 0, sizeof(dp));
+//    boundary
+    int ans = 0;
+    for (int i = 0; i < len; ++i)
+    {
+        dp[i][i] = 1;
+        if (i < len - 1)
+        {
+            if (S[i] == S[i+1])
+            {
+                dp[i][i+1] = 1;
+                ans = 2;
+            }
+        }
+    }
+
+    for (int L = 3; L <= len; ++L)
+    {
+        for (int i = 0; i + L - 1 < len; ++i)
+        {
+            int j = i + L - 1;
+            if (S[i] == S[j] && dp[i+1][j-1] == 1)
+            {
+                dp[i][j] = 1;
+                ans = L;
+            }
+        }
+    }
+
+    printf("%d\n", ans);
+}
+}
 
 
 
@@ -239,6 +280,7 @@ int main(int argc, char **argv)
 {
 //    L2_005::entry();
 //    L2_006::entry();
-    L2_007::entry();
+//    L2_007::entry();
+    L2_008::entry();
     return 0;
 }
