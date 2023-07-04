@@ -3,6 +3,7 @@
 #include <queue>
 #include <algorithm>
 #include <cstring>
+#include <cmath>
 
 
 namespace L2_005 {
@@ -274,6 +275,174 @@ void entry()
 }
 }
 
+namespace L2_009 {
+constexpr int N = 10'005;
+constexpr double EPS = 1e-8;
+
+template<class T>
+inline bool equal(T a, T b)
+{
+    return fabs(a - b) < EPS;
+}
+
+template<class T>
+inline bool greater(T a, T b)
+{
+    return a - b > EPS;
+}
+
+struct envelope
+{
+    int id;
+    int amount;
+    double balance;
+};
+
+bool operator<(const envelope &a, const envelope &b)
+{
+    if (!equal(a.balance, b.balance))
+        return greater(a.balance, b.balance);
+    else if (a.amount != b.amount)
+        return a.amount > b.amount;
+    else
+        return a.id < b.id;
+}
+
+envelope all[N];
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    for (int i = 1; i <= n; ++i)
+    {
+        int k, ni;
+        double pi;
+        scanf("%d", &k);
+        for (int j = 0; j < k; ++j)
+        {
+            scanf("%d%lf", &ni, &pi);
+            all[ni].amount++;
+            all[ni].balance += pi;
+            all[i].balance -= pi;
+        }
+        all[i].id = i;
+    }
+
+    std::sort(all + 1, all + n + 1);
+    for (int i = 1; i <= n; ++i)
+    {
+        printf("%d %.2f\n", all[i].id, all[i].balance/100);
+    }
+}
+}
+
+namespace L2_010 {
+
+
+
+}
+
+namespace L2_011 {
+constexpr int N = 35;
+
+struct node
+{
+    int data;
+    node *left, *right;
+};
+
+int in[N], pre[N];
+
+node *build_tree(int inL, int inR, int preL, int preR)
+{
+    if (inL > inR)
+        return nullptr;
+    node *root = new node;
+    root->data = pre[preL];
+    int k;
+    for (k = inL; k <= inR; ++k)
+        if (in[k] == pre[preL])
+            break;
+
+    int nleft = k - inL;
+    root->left = build_tree(inL, k-1, preL+1, preL+nleft);
+    root->right = build_tree(k+1, inR, preL+1+nleft, inR);
+    return root;
+}
+
+void mirror_tree(node *&root)
+{
+    if (root == nullptr)
+        return;
+    mirror_tree(root->left);
+    mirror_tree(root->right);
+    std::swap(root->left, root->right);
+}
+
+void traversal_level(node *root, int n)
+{
+    std::queue<node *> Q;
+    Q.push(root);
+    int cnt = 0;
+    while (!Q.empty())
+    {
+        node *top = Q.front();
+        Q.pop();
+        printf("%d", top->data);
+        if (++cnt < n)
+            printf(" ");
+
+        if (top->left)
+            Q.push(top->left);
+        if (top->right)
+            Q.push(top->right);
+    }
+}
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i)
+        scanf("%d", &in[i]);
+    for (int j = 0; j < n; ++j)
+        scanf("%d", &pre[j]);
+
+    node *root = build_tree(0, n-1, 0, n-1);
+    mirror_tree(root);
+    traversal_level(root, n);
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 int main(int argc, char **argv)
@@ -281,6 +450,8 @@ int main(int argc, char **argv)
 //    L2_005::entry();
 //    L2_006::entry();
 //    L2_007::entry();
-    L2_008::entry();
+//    L2_008::entry();
+//    L2_009::entry();
+    L2_011::entry();
     return 0;
 }
