@@ -4,7 +4,8 @@
 #include <algorithm>
 #include <cstring>
 #include <cmath>
-
+#include <iostream>
+#include <sstream>
 
 namespace L2_005 {
 constexpr int N = 55;
@@ -338,10 +339,72 @@ void entry()
 }
 
 namespace L2_010 {
+constexpr int N = 105;
 
+int relations[N][N];
+int father[N];
 
-
+void init()
+{
+    for (int i = 0; i < N; ++i)
+    {
+        father[i] = i;
+    }
 }
+
+int find(int x)
+{
+    int a = x;
+    while (x != father[x])
+        x = father[x];
+
+    while (a != father[a])
+    {
+        int z = a;
+        a = father[a];
+        father[z] = x;
+    }
+    return x;
+}
+
+void union_(int a, int b)
+{
+    int fa = find(a);
+    int fb = find(b);
+    if (fa != fb)
+        father[fa] = fb;
+}
+
+void entry()
+{
+    int n, m, k;
+    scanf("%d%d%d", &n, &m, &k);
+    init();
+    int u, v, op;
+    for (int i = 0; i < m; ++i)
+    {
+        scanf("%d%d%d", &u, &v, &op);
+        relations[u][v] = relations[v][u] = op;
+        if (op == 1)
+            union_(u, v);
+    }
+    for (int j = 0; j < k; ++j)
+    {
+        scanf("%d%d", &u, &v);
+        int fu = find(u);
+        int fv = find(v);
+        if (relations[u][v] != -1 && fu == fv)
+            printf("No problem\n");
+        else if (relations[u][v] == 0)
+            printf("OK\n");
+        else if (fu == fv && relations[u][v] == -1)
+            printf("OK but...\n");
+        else if (relations[u][v] == -1 && fu != fv)
+            printf("No way\n");
+    }
+}
+}
+
 
 namespace L2_011 {
 constexpr int N = 35;
@@ -366,8 +429,8 @@ node *build_tree(int inL, int inR, int preL, int preR)
             break;
 
     int nleft = k - inL;
-    root->left = build_tree(inL, k-1, preL+1, preL+nleft);
-    root->right = build_tree(k+1, inR, preL+1+nleft, inR);
+    root->left = build_tree(inL, k - 1, preL + 1, preL + nleft);
+    root->right = build_tree(k + 1, inR, preL + 1 + nleft, inR);
     return root;
 }
 
@@ -409,12 +472,211 @@ void entry()
     for (int j = 0; j < n; ++j)
         scanf("%d", &pre[j]);
 
-    node *root = build_tree(0, n-1, 0, n-1);
+    node *root = build_tree(0, n - 1, 0, n - 1);
     mirror_tree(root);
     traversal_level(root, n);
 }
 }
 
+namespace L2_012 {
+constexpr int N = 1005;
+
+
+class heap
+{
+public:
+    heap() : heap_{0}, n_(0)
+    {
+    }
+
+    heap(std::initializer_list<int> li);
+    void insert(int x);
+    bool is_root(int x);
+    bool is_siblings(int x, int y);
+    bool is_parent(int x, int y);
+    bool is_child(int x, int y);
+
+private:
+
+    void adjust_down(int low, int high);
+    void adjust_up(int low, int high);
+    void build_heap();
+
+    int heap_[N];
+    int n_;
+};
+
+heap::heap(std::initializer_list<int> li) : heap()
+{
+    for (const auto &item : li)
+    {
+        heap_[++n_] = item;
+    }
+    build_heap();
+}
+
+void heap::insert(int x)
+{
+    heap_[++n_] = x;
+    adjust_up(1, n_);
+}
+
+bool heap::is_root(int x)
+{
+    return heap_[1] == x;
+}
+
+bool heap::is_siblings(int x, int y)
+{
+    int index_x, index_y;
+    for (int i = 1; i <= n_; ++i)
+    {
+        if (heap_[i] == x)
+            index_x = i;
+        if (heap_[i] == y)
+            index_y = i;
+    }
+    return index_x/2 == index_y/2;
+}
+
+bool heap::is_parent(int x, int y)
+{
+    int index_x, index_y;
+    for (int i = 1; i <= n_; ++i)
+    {
+        if (heap_[i] == x)
+            index_x = i;
+        if (heap_[i] == y)
+            index_y = i;
+    }
+    return index_y/2 == index_x;
+}
+
+bool heap::is_child(int x, int y)
+{
+    int index_x, index_y;
+    for (int i = 1; i <= n_; ++i)
+    {
+        if (heap_[i] == x)
+            index_x = i;
+        if (heap_[i] == y)
+            index_y = i;
+    }
+    return index_x/2 == index_y;
+}
+
+void heap::adjust_down(int low, int high)
+{
+    int i = low, j = 2 * i;
+
+    while (j <= high)
+    {
+        if (j + 1 <= high && heap_[j+1] < heap_[j])
+            ++j;
+
+        if (heap_[j] < heap_[i])
+        {
+            std::swap(heap_[j], heap_[i]);
+            i = j;
+            j = i * 2;
+        }
+        else
+            break;
+    }
+}
+
+void heap::adjust_up(int low, int high)
+{
+    int i = high, j = i / 2;
+    while (j >= low)
+    {
+        if (heap_[j] > heap_[i])
+        {
+            std::swap(heap_[j], heap_[i]);
+            i = j;
+            j = i / 2;
+        }
+        else
+            break;
+    }
+
+}
+
+void heap::build_heap()
+{
+    for (int i = n_/2; i >= 1 ; --i)
+    {
+        adjust_down(i, n_);
+    }
+
+}
+
+
+void entry()
+{
+    int n, m;
+    scanf("%d%d", &n, &m);
+    heap min_heap;
+    for (int i = 0; i < n; ++i)
+    {
+        int x;
+        scanf("%d", &x);
+        min_heap.insert(x);
+    }
+    getchar();
+    int x, y;
+    char ans;
+    std::string str;
+    for (int j = 0; j < m; ++j)
+    {
+        std::getline(std::cin, str);
+        if (auto it = str.find("is the root"); it != std::string::npos)
+        {
+            std::istringstream iss(str);
+            iss >> x;
+            ans = min_heap.is_root(x) ? 'T' : 'F';
+            printf("%c\n", ans);
+        }
+        if (auto it = str.find("are siblings"); it != std::string::npos)
+        {
+            std::istringstream iss(str);
+            std::string tmp;
+            iss >> x >> tmp >> y;
+            ans = min_heap.is_siblings(x, y) ? 'T' : 'F';
+            printf("%c\n", ans);
+        }
+
+        if (auto it = str.find("is the parent of"); it != std::string::npos)
+        {
+            std::istringstream iss(str);
+            std::string tmp;
+            iss >> x;
+            for (int i = 0; i < 4; ++i)
+            {
+                iss >> tmp;
+            }
+            iss >> y;
+            ans = min_heap.is_parent(x, y) ? 'T' : 'F';
+            printf("%c\n", ans);
+        }
+        if (auto it = str.find("is a child of"); it != std::string::npos)
+        {
+            std::istringstream iss(str);
+            std::string tmp;
+            iss >> x;
+            for (int i = 0; i < 4; ++i)
+            {
+                iss >> tmp;
+            }
+            iss >> y;
+            ans = min_heap.is_child(x, y) ? 'T' : 'F';
+            printf("%c\n", ans);
+        }
+    }
+}
+}
+
+namespace L2_013 {
 
 
 
@@ -430,19 +692,7 @@ void entry()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 int main(int argc, char **argv)
@@ -452,6 +702,8 @@ int main(int argc, char **argv)
 //    L2_007::entry();
 //    L2_008::entry();
 //    L2_009::entry();
-    L2_011::entry();
+//    L2_010::entry();
+//    L2_011::entry();
+    L2_012::entry();
     return 0;
 }
