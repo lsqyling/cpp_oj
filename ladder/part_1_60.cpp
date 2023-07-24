@@ -676,10 +676,326 @@ void entry()
 }
 }
 
-namespace L2_013 {
+namespace L2_013_a {
+constexpr int N = 505;
+
+int G[N][N];
+bool visit[N];
+int lost[N], len = 0;
 
 
+void dfs(int u, int n)
+{
+    visit[u] = true;
+    for (int v = 0; v < n; ++v)
+    {
+        if (G[u][v] != 0 && !visit[v])
+            dfs(v, n);
+    }
+}
 
+int calc_connection(int n)
+{
+    int count = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        if (!visit[i])
+        {
+            ++count;
+            dfs(i, n);
+        }
+    }
+    memset(visit, false, sizeof(visit));
+    return count;
+}
+
+void entry()
+{
+    int n, m, k;
+    scanf("%d%d", &n, &m);
+    for (int i = 0; i < m; ++i)
+    {
+        int u, v;
+        scanf("%d%d", &u, &v);
+        G[u][v] = G[v][u] = 1;
+    }
+
+    int count = calc_connection(n);
+    scanf("%d", &k);
+    while (k--)
+    {
+        int u;
+        scanf("%d", &u);
+        lost[len++] = u;
+        for (int i = 0; i < len; ++i)
+        {
+            visit[lost[i]] = true;
+        }
+        int cur = calc_connection(n);
+        if (cur <= count)
+            printf("City %d is lost.\n", lost[len-1]);
+        else
+            printf("Red Alert: City %d is lost!\n", lost[len-1]);
+        count = cur;
+    }
+    if (len == n)
+        printf("Game Over.\n");
+}
+}
+
+namespace L2_013_b {
+constexpr int N = 1005;
+constexpr int M = 5005;
+
+int father[N];
+bool visit[N];
+struct node
+{
+    int u, v;
+};
+
+node road[M];
+
+void init()
+{
+    for (int i = 0; i < N; ++i)
+    {
+        father[i] = i;
+    }
+}
+
+int find(int x)
+{
+    int a = x;
+    while (x != father[x])
+        x = father[x];
+
+    while (a != father[a])
+    {
+        int z = a;
+        a = father[a];
+        father[z] = x;
+    }
+    return x;
+}
+
+void union_(int a, int b)
+{
+    int fa = find(a);
+    int fb = find(b);
+    if (fa != fb)
+        father[fa] = fb;
+}
+
+int calc_connections(int n)
+{
+    int count = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        if (!visit[i] && father[i] == i)
+            ++count;
+    }
+
+    return count;
+}
+
+void entry()
+{
+    int n, m, k;
+    scanf("%d%d", &n, &m);
+    init();
+    for (int i = 0; i < m; ++i)
+    {
+        scanf("%d%d", &road[i].u, &road[i].v);
+        union_(road[i].u, road[i].v);
+    }
+
+    int sum = calc_connections(n);
+    scanf("%d", &k);
+    int t = k;
+    while (t--)
+    {
+        int u;
+        scanf("%d", &u);
+        visit[u] = true;
+        init();
+        for (int i = 0; i < m; ++i)
+        {
+            if (!visit[road[i].u] && !visit[road[i].v])
+                union_(road[i].u, road[i].v);
+        }
+        int cur = calc_connections(n);
+        if (cur <= sum)
+            printf("City %d is lost.\n", u);
+        else
+            printf("Red Alert: City %d is lost!\n", u);
+
+        sum = cur;
+    }
+    if (n == k)
+        printf("Game Over.\n");
+}
+};
+
+namespace L2_014 {
+void entry()
+{
+    int n, x;
+    scanf("%d", &n);
+    std::set<int> nums;
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d", &x);
+        if (auto it = nums.lower_bound(x); it != nums.end())
+        {
+            nums.erase(it);
+            nums.insert(x);
+        }
+        else
+            nums.insert(x);
+    }
+
+    printf("%zu\n", nums.size());
+}
+}
+
+namespace L2_015 {
+
+void entry()
+{
+    int n, k, m;
+    scanf("%d%d%d", &n, &k, &m);
+
+    double avg[n];
+
+    for (int i = 0; i < n; ++i)
+    {
+        int max = 0, min = 105;
+        int s, sum = 0;
+        for (int j = 0; j < k; ++j)
+        {
+            scanf("%d", &s);
+            if (s > max)
+                max = s;
+            if (s < min)
+                min = s;
+            sum += s;
+        }
+        avg[i] = 1.0 * (sum - min - max) / (k-2);
+    }
+    std::sort(avg, avg + n);
+    for (int i = n - m; i < n; ++i)
+    {
+        printf("%.3f", avg[i]);
+        if (i < n - 1)
+            printf(" ");
+    }
+}
+}
+
+namespace L2_016 {
+constexpr int N = 100'005;
+
+std::vector<int> G[N];
+char gender[N];
+bool visit[N];
+
+void dfs(int u, int depth, bool &flag)
+{
+    if (depth > 5)
+        return;
+    visit[u] = true;
+    for (auto v : G[u])
+    {
+        if (!visit[v])
+            dfs(v, depth + 1, flag);
+        else
+            flag = true;
+    }
+}
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i)
+    {
+        int id, f, m;
+        char c;
+        scanf("%d %c %d %d", &id, &c, &f, &m);
+        gender[id] = c;
+        if (f != -1)
+        {
+            G[id].push_back(f);
+            gender[f] = 'M';
+        }
+        if (m != -1)
+        {
+            G[id].push_back(m);
+            gender[m] = 'F';
+        }
+    }
+
+    int k;
+    scanf("%d", &k);
+    while (k--)
+    {
+        int u, v;
+        scanf("%d%d", &u, &v);
+        if (gender[u] == gender[v])
+            printf("Never Mind\n");
+        else
+        {
+            memset(visit, false, sizeof(visit));
+            bool flag = false;
+            dfs(u, 1, flag);
+            dfs(v, 1, flag);
+            if (flag)
+                printf("No\n");
+            else
+                printf("Yes\n");
+
+        }
+    }
+}
+}
+
+namespace L2_017 {
+constexpr int N = 100'005;
+
+int num[N];
+
+void entry()
+{
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d", &num[i]);
+    }
+
+    std::sort(num, num + n, [](int a, int b) { return a > b;});
+    int s1 = 0, s2 = 0;
+    for (int j = 0; j < n; ++j)
+    {
+        if (j < n/2)
+            s1 += num[j];
+        else
+            s2 += num[j];
+    }
+    if (n % 2 == 0)
+    {
+        printf("Outgoing #: %d\n", n / 2);
+        printf("Introverted #: %d\n", n / 2);
+        printf("Diff = %d\n", s1 - s2);
+    }
+    else
+    {
+        printf("Outgoing #: %d\n", n / 2 + 1);
+        printf("Introverted #: %d\n", n / 2);
+        printf("Diff = %d\n", s1 - s2 + 2 * num[n/2]);
+    }
+}
 
 
 
@@ -704,6 +1020,12 @@ int main(int argc, char **argv)
 //    L2_009::entry();
 //    L2_010::entry();
 //    L2_011::entry();
-    L2_012::entry();
+//    L2_012::entry();
+//    L2_013_a::entry();
+//    L2_013_b::entry();
+//    L2_014::entry();
+//    L2_015::entry();
+//    L2_016::entry();
+    L2_017::entry();
     return 0;
 }
