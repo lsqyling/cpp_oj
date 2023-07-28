@@ -996,11 +996,76 @@ void entry()
         printf("Diff = %d\n", s1 - s2 + 2 * num[n/2]);
     }
 }
+}
 
+namespace L2_018 {
+constexpr int N = 100'005;
 
+double a[N], b[N], c[N];
 
+void print_polynomial(double arr[], int index)
+{
+    int len = 0;
+    for (int i = 0; i <= index; ++i)
+    {
+        if (std::abs(arr[i]) + 0.05 >= 0.1)
+            ++len;
+    }
+    printf("%d", len);
+    if (len == 0)
+        printf(" 0 0.0");
+    else
+    {
+        for (int j = index; j >= 0; --j)
+        {
+            if (std::abs(arr[j]) + 0.05 >= 0.1)
+                printf(" %d %.1f", j, arr[j]);
+        }
+    }
+    printf("\n");
+}
 
+void entry()
+{
+    int n, e;
+    double cof;
+    scanf("%d", &n);
+    int index1 = 0, index2 = 0;
 
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d%lf", &e, &cof);
+        a[e] = cof;
+        if (e > index1)
+            index1 = e;
+    }
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i)
+    {
+        scanf("%d%lf", &e, &cof);
+        b[e] = cof;
+        if (e > index2)
+            index2 = e;
+    }
+    int tmp = index1 - index2;
+
+    while (index1 - index2 >= 0)
+    {
+        double q = a[index1]/b[index2];
+        c[index1-index2] = q;
+        for (int i = index1, j = index2; i >= 0 && j >= 0; --i, --j)
+        {
+            a[i] -= b[j]*q;
+        }
+        while (a[index1] == 0)
+            --index1;
+    }
+    print_polynomial(c, tmp);
+    print_polynomial(a, index1);
+}
+}
+
+namespace L2_019 {
 
 
 
@@ -1026,6 +1091,7 @@ int main(int argc, char **argv)
 //    L2_014::entry();
 //    L2_015::entry();
 //    L2_016::entry();
-    L2_017::entry();
+//    L2_017::entry();
+    L2_018::entry();
     return 0;
 }
