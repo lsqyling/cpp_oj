@@ -22,6 +22,17 @@ else ()
     message(STATUS "Name: ${CMAKE_SYSTEM_NAME}")
     message(STATUS "Version: ${CMAKE_SYSTEM_VERSION}")
 endif ()
+
+
+if (CMAKE_CXX_COMPILER_ID MATCHES Clang)
+    message(STATUS "${CMAKE_CXX_COMPILER_ID}")
+    add_compile_options(-stdlib=libc++)
+elseif (CMAKE_CXX_COMPILER_ID MATCHES GNU)
+    message(STATUS "${CMAKE_CXX_COMPILER_ID}")
+    add_compile_options(-std=c++20)
+endif ()
+
+
 # pthread
 find_package(Threads REQUIRED)
 if (Threads_FOUND)
@@ -31,13 +42,12 @@ endif ()
 file(GLOB_RECURSE src_list
         LIST_DIRECTORIES false
         RELATIVE ${CMAKE_CURRENT_LIST_DIR}
-        *.cpp *.c)
+        oj/*.cpp oj/*.c)
 
 foreach (_v ${src_list})
-    string(REGEX REPLACE pat/ "" _name ${_v})
-    string(REGEX REPLACE / "_" _name ${_name})
+    string(REGEX REPLACE / "_" _name ${_v})
     string(REGEX REPLACE .cpp "" _name ${_name})
-    string(REPLACE .c "" _name ${_name})
+    string(REGEX REPLACE .c "" _name ${_name})
     if (_name MATCHES primer0)
         add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v})
         target_link_libraries(${_name}
@@ -49,8 +59,6 @@ foreach (_v ${src_list})
 endforeach ()
 
 add_subdirectory(professional_cpp)
-
-
 
 
 

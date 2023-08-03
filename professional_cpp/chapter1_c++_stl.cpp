@@ -76,11 +76,6 @@ void init_employee()
     std::cout << std::format("an employee first: {}, last: {}, number: {}, salary: {}.\n",
             an_employee.first_initial, an_employee.last_initial, an_employee.number, an_employee.salary);
 }
-
-
-
-
-
 }
 
 

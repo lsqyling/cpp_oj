@@ -11,7 +11,7 @@ has_elites_super_rewards_status_(0)
 
 AirlineTicket::~AirlineTicket() = default;
 
-double AirlineTicket::calc_price_in_dollars()
+double AirlineTicket::calc_price_in_dollars() const
 {
     if (has_elites_super_rewards_status())
         return 0;
@@ -19,7 +19,7 @@ double AirlineTicket::calc_price_in_dollars()
         return get_number_of_miles() * 0.1;
 }
 
-std::string AirlineTicket::get_passenger_name()
+std::string AirlineTicket::get_passenger_name() const
 {
     return passenger_name_;
 }
@@ -31,7 +31,7 @@ void AirlineTicket::set_passenger_name(std::string name)
 
 }
 
-int AirlineTicket::get_number_of_miles()
+int AirlineTicket::get_number_of_miles() const
 {
     return number_of_miles_;
 }
@@ -42,7 +42,7 @@ void AirlineTicket::set_number_of_miles(int miles)
 
 }
 
-bool AirlineTicket::has_elites_super_rewards_status()
+bool AirlineTicket::has_elites_super_rewards_status() const
 {
     return has_elites_super_rewards_status_;
 }
