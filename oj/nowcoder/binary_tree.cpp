@@ -580,7 +580,7 @@ public:
     }
 
 
-    char *Serialize(TreeNode *root)
+    const char *Serialize(TreeNode *root)
     {
         if (root == nullptr)
             return "#";
@@ -653,7 +653,7 @@ public:
 
 
 
-    TreeNode *reConstructBinaryTree(std::vector<int> pre, std::vector<int> vin)
+    TreeNode *reConstructBinaryTree(const std::vector<int> &pre, const std::vector<int> &vin)
     {
         this->pre_ = pre;
         this->in_ = vin;

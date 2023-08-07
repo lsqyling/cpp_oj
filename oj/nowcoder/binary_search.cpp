@@ -1,6 +1,5 @@
 
-
-#include <c++/7/vector>
+#include <vector>
 #include <iostream>
 
 namespace bm17 {

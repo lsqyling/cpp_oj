@@ -46,8 +46,8 @@ file(GLOB_RECURSE src_list
 
 foreach (_v ${src_list})
     string(REGEX REPLACE / "_" _name ${_v})
-    string(REGEX REPLACE .cpp "" _name ${_name})
-    string(REGEX REPLACE .c "" _name ${_name})
+    string(REPLACE .cpp "" _name ${_name})
+    string(REPLACE .c "" _name ${_name})
     if (_name MATCHES primer0)
         add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v})
         target_link_libraries(${_name}

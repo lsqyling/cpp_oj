@@ -1,10 +1,10 @@
 #include <string>
 #include <string_view>
 #include <memory>
-#include <format>
 #include <iostream>
 #include <cmath>
-
+#include <utility>
+#include <format>
 
 namespace tc {
 template<typename, int, int> class grid;
@@ -316,8 +316,57 @@ void test_find()
     double d_arr[]{3.14, 3.1415, 4.357383, 5.397912, 6.1234, 7.245435};
     std::cout << std::format("5 == find(d_arr, 6, 7.245435)? {}", 5 == find(d_arr, 6, 7.245435)) << std::endl;
 }
+template<typename K, typename V>
+class key_value_pair
+{
+public:
+    key_value_pair(K key, V value);
+
+    K get_key() const
+    {
+        return key_;
+    }
+
+    void set_key(K key)
+    {
+        key_ = key;
+    }
+
+    V get_value() const
+    {
+        return value_;
+    }
+
+    void set_value(V value)
+    {
+        value_ = value;
+    }
+
+private:
+    K key_{};
+    V value_{};
+
+};
+
+
+template<typename K, typename V>
+key_value_pair<K, V>::key_value_pair(K key, V value): key_(std::move(key)), value_(std::move(value))
+{
+
 }
 
+
+void test_key_value_pair()
+{
+    key_value_pair<std::string, int> kv{"John Doe", 5};
+    std::cout << std::format("[{}:{}]", kv.get_key(), kv.get_value())
+              << std::endl;
+    key_value_pair<std::string, std::string> mykv{"zhang", "san"};
+    std::cout << std::format("[{}:{}]", mykv.get_key(), mykv.get_value())
+              << std::endl;
+
+}
+}
 
 
 
@@ -329,7 +378,7 @@ int main(int argc, char *argv[])
     tc::test_concept_auto();
     tc::test_type_constraint_func();
     tc::test_find();
-
+    tc::test_key_value_pair();
 
     return 0;
 }
