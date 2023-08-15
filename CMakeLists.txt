@@ -32,7 +32,6 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES GNU)
     add_compile_options(-std=c++20)
 endif ()
 
-
 # pthread
 find_package(Threads REQUIRED)
 if (Threads_FOUND)

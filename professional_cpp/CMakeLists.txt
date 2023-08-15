@@ -22,6 +22,11 @@ foreach (_v ${src_list})
     if (_v MATCHES chapter)
         string(REPLACE .cpp "" _name ${_v})
         add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v} ${target_src_list})
+        if (_v MATCHES multi_thread)
+            target_link_directories(${_name}
+            PRIVATE
+            Threads::Threads)
+        endif ()
     endif ()
 endforeach ()
 
