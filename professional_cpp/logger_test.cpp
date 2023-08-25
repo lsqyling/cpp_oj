@@ -11,7 +11,7 @@ void log_some_msg(int id, ts::logger &logger)
 
 void test_log_some_msg()
 {
-    ts::logger logger;
+    auto &logger = ts::logger::instance();
     std::vector<std::thread> threads;
     for (int i = 0; i < 10; ++i)
     {
@@ -31,15 +31,10 @@ void test_log_some_msg()
 
 
 
-
-
-
-
-
 int main()
 {
     test_log_some_msg();
-    ts::logger logger;
+    auto &logger =  ts::logger::instance();
     std::cout << noexcept(logger.~logger()) << std::endl;
     return 0;
 }

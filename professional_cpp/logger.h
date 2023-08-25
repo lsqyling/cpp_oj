@@ -19,6 +19,9 @@ public:
     void log(std::string entry);
 
 
+    static logger &instance();
+
+
 private:
     void process_entries();
     void process_entries_helper(std::queue<std::string> &queue, std::ofstream &ofs) const;

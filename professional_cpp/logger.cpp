@@ -14,6 +14,12 @@ void ts::logger::log(std::string entry)
     m_cond.notify_all();
 }
 
+ts::logger &ts::logger::instance()
+{
+    static logger logger_1;
+    return logger_1;
+}
+
 ts::logger::~logger()
 {
     {
@@ -27,7 +33,7 @@ ts::logger::~logger()
 
 void ts::logger::process_entries()
 {
-    std::ofstream ofs(R"(D:\dev\workspace\clion\oj\professional_cpp\log.txt)");
+    std::ofstream ofs("log.txt");
     if (ofs.fail())
     {
         std::cerr << "Failed to open logfile." << std::endl;

@@ -57,7 +57,8 @@ foreach (_v ${src_list})
     endif ()
 endforeach ()
 
-add_subdirectory(professional_cpp)
 
+add_subdirectory(professional_cpp)
+add_subdirectory(cpp20_advanced_programing)
 
 
