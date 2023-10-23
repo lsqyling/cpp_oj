@@ -416,10 +416,29 @@ void test()
 
     cout << "sizeof(proxy) = " << sizeof(proxy) << endl;
 }
-
-
 }
 
+
+namespace test_noexcept {
+struct point
+{
+    int x, y;
+};
+
+void test()
+{
+    point p{};
+    point p1{};
+
+    std::cout << std::format("noexcept(point()) = {}\n", noexcept(point()));
+    static_assert(noexcept(point()) == true);
+    static_assert(noexcept(p.~point()) == true);
+    static_assert(noexcept(point(p1)) == true);
+    static_assert(noexcept(point(point{})) == true);
+    static_assert(noexcept(p.operator=(p1)) == true);
+    static_assert(noexcept(p.operator=(point{})) == true);
+}
+}
 
 
 
@@ -434,5 +453,6 @@ int main()
     factory_method::test();
     adapter::test();
     proxy::test();
+    test_noexcept::test();
     return 0;
 }
