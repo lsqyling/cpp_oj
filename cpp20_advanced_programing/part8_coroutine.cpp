@@ -82,8 +82,6 @@ void test_gen_fib()
         std::cout << g.next() << std::endl;
     }
 
-
-
 }
 
 
