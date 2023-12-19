@@ -1,65 +1,45 @@
-cmake_minimum_required(VERSION 3.15)
+﻿cmake_minimum_required(VERSION 3.20)
 
-project(oj LANGUAGES C CXX)
+project(oj LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
+
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
 
 
-if (CMAKE_SYSTEM_NAME MATCHES Windows AND CMAKE_SYSTEM_VERSION MATCHES 10)
-    message(STATUS "Windows 10 detected.")
-    message(STATUS "Name: ${CMAKE_SYSTEM_NAME}")
-    message(STATUS "Version: ${CMAKE_SYSTEM_VERSION}")
-elseif (CMAKE_SYSTEM_NAME MATCHES Linux)
-    message(STATUS "Linux detected.")
-    message(STATUS "Name: ${CMAKE_SYSTEM_NAME}")
-    message(STATUS "Version: ${CMAKE_SYSTEM_VERSION}")
-else ()
-    message(STATUS "Other OS!")
-    message(STATUS "Name: ${CMAKE_SYSTEM_NAME}")
-    message(STATUS "Version: ${CMAKE_SYSTEM_VERSION}")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin)
+
+if (MSVC)
+    add_compile_options("/utf-8")
 endif ()
 
-
-if (CMAKE_CXX_COMPILER_ID MATCHES Clang)
-    message(STATUS "${CMAKE_CXX_COMPILER_ID}")
-    add_compile_options(-stdlib=libc++)
-elseif (CMAKE_CXX_COMPILER_ID MATCHES GNU)
-    message(STATUS "${CMAKE_CXX_COMPILER_ID}")
-    add_compile_options(-std=c++20)
+#install dir
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/install)
+if (WIN32)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif ()
 
-# pthread
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "build type" FORCE)
+endif ()
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
 find_package(Threads REQUIRED)
-if (Threads_FOUND)
-    message(STATUS "pthread finded!")
-endif ()
-# generate target
-file(GLOB_RECURSE src_list
-        LIST_DIRECTORIES false
-        RELATIVE ${CMAKE_CURRENT_LIST_DIR}
-        oj/*.cpp oj/*.c)
 
-foreach (_v ${src_list})
-    string(REGEX REPLACE / "_" _name ${_v})
-    string(REPLACE .cpp "" _name ${_name})
-    string(REPLACE .c "" _name ${_name})
-    if (_name MATCHES primer0)
-        add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v})
-        target_link_libraries(${_name}
-                PRIVATE
-                Threads::Threads m)
-    else ()
-        add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v})
-    endif ()
-endforeach ()
-
-
+add_subdirectory(oj)
+add_subdirectory(alg_notes)
 add_subdirectory(professional_cpp)
 add_subdirectory(cpp20_advanced_programing)
 add_subdirectory(cpp_core_guide_lines)
+add_subdirectory(vcpkg_lib_apply)
 
+
+install(FILES README.md LICENSE
+DESTINATION doc)
 

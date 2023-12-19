@@ -61,29 +61,29 @@ void test_duration()
     cout << many_s.count() << endl;
 }
 
-
-void test_clock()
-{
-    auto tp = system_clock::now();
-    auto tt = system_clock::to_time_t(tp);
-    tm *t = localtime(&tt);
-    cout << put_time(t, "%H:%M:%S") << endl;
-
-    stringstream ss;
-    ss << put_time(t, "%H:%M:%S");
-    string str{ss.str()};
-    cout << str << endl;
-
-    auto start = high_resolution_clock::now();
-    double d = 0;
-    for (int i = 0; i < 1'000'000; ++i)
-    {
-        d += sqrt(sin(i) * cos(i));
-    }
-    auto end = high_resolution_clock::now();
-    auto diff = end - start;
-    cout << duration<double, milli>(diff).count() << "ms" << endl;
-}
+//
+//void test_clock()
+//{
+//    auto tp = system_clock::now();
+//    auto tt = system_clock::to_time_t(tp);
+//    tm *t = localtime(&tt);
+//    cout << put_time(t, "%H:%M:%S") << endl;
+//
+//    stringstream ss;
+//    ss << put_time(t, "%H:%M:%S");
+//    string str{ss.str()};
+//    cout << str << endl;
+//
+//    auto start = high_resolution_clock::now();
+//    double d = 0;
+//    for (int i = 0; i < 1'000'000; ++i)
+//    {
+//        d += sqrt(sin(i) * cos(i));
+//    }
+//    auto end = high_resolution_clock::now();
+//    auto diff = end - start;
+//    cout << duration<double, milli>(diff).count() << "ms" << endl;
+//}
 
 void test_time_point()
 {
@@ -102,53 +102,53 @@ void test_time_point()
     auto tp_s = time_point_cast<seconds>(tp_milliseconds);
     cout << tp_s.time_since_epoch().count() << " ms" << endl;
 }
+//
+//void test_date()
+//{
+//    year y1{2020};
+//    auto y2 = 2020y;
+//    month m1{6};
+//    auto m2 = June;
+//    day d1{22};
+//    auto d2 = 22d;
+//
+//    year_month_day fulldate1{2020y, August, 12d};
+//    auto fulldate2{2020y / August / 12d};
+//    auto fulldate3{August / 12d / 2023y};
+//    auto fulldate4{12d / August / 2023y};
+//
+//    year_month_day fulldate5{Monday[3] / June / 2023y};
+//    auto june22{June / 22d};
+//    auto june22_2020{2020y / june22};
+//
+//    auto last_day_of_ajune{June / last};
+//    auto last_day_of_june2020{2020y / last_day_of_ajune};
+//    auto last_monday_of_june2020{2020y / June / Monday[last]};
+//
+//    auto today = floor<days>(system_clock::now());
+//    auto t1 = sys_days(2020y / June / 22d);
+//    year_month_day ymd = floor<days>(t1);
+//    year_month_day ymd1 = floor<days>(system_clock::now());
+//
+//    auto t2 = sys_days(2020y / June / 22d) + 9h + 35min + 10s;
+//
+//    auto t3{t2 + days(5)};
+//    auto t4 = t3 + years(1);
+//
+//    cout << ymd << endl;
+//}
 
-void test_date()
-{
-    year y1{2020};
-    auto y2 = 2020y;
-    month m1{6};
-    auto m2 = June;
-    day d1{22};
-    auto d2 = 22d;
-
-    year_month_day fulldate1{2020y, August, 12d};
-    auto fulldate2{2020y / August / 12d};
-    auto fulldate3{August / 12d / 2023y};
-    auto fulldate4{12d / August / 2023y};
-
-    year_month_day fulldate5{Monday[3] / June / 2023y};
-    auto june22{June / 22d};
-    auto june22_2020{2020y / june22};
-
-    auto last_day_of_ajune{June / last};
-    auto last_day_of_june2020{2020y / last_day_of_ajune};
-    auto last_monday_of_june2020{2020y / June / Monday[last]};
-
-    auto today = floor<days>(system_clock::now());
-    auto t1 = sys_days(2020y / June / 22d);
-    year_month_day ymd = floor<days>(t1);
-    year_month_day ymd1 = floor<days>(system_clock::now());
-
-    auto t2 = sys_days(2020y / June / 22d) + 9h + 35min + 10s;
-
-    auto t3{t2 + days(5)};
-    auto t4 = t3 + years(1);
-
-    cout << ymd << endl;
-}
-
-void  test_time_zone()
-{
-    const auto &database = get_tzdb();
-    for (const auto &item: database.zones)
-    {
-        cout << item.name() << "\n";
-    }
-
-    auto gmt = locate_zone("America/Bahia");
-    gmt->to_local(system_clock::now());
-}
+//void  test_time_zone()
+//{
+//    const auto &database = get_tzdb();
+//    for (const auto &item: database.zones)
+//    {
+//        cout << item.name() << "\n";
+//    }
+//
+//    auto gmt = locate_zone("America/Bahia");
+//    gmt->to_local(system_clock::now());
+//}
 }
 
 namespace dt::exercise {
@@ -163,26 +163,26 @@ void test_22_1()
     cout << d3.count() << " seconds" << endl;
     cout << d4.count() << " minutes" << endl;
 }
-
-void test_22_2()
-{
-    std::regex r{R"(([0-9]{4})-(0?[1-9]|1[0-2])-(0?[1-9]|[1-2][0-9]|3[0-1]))"};
-    while (true)
-    {
-        string str;
-        if (!std::getline(cin, str) || str[0] == 'q')
-            break;
-        if (std::smatch m; std::regex_match(str, m, r))
-        {
-            int y, mon, d;
-            y = std::stoi(m[1].str());
-            mon = std::stoi(m[2].str());
-            d = std::stoi(m[3].str());
-            year_month_day ymd{year{y}, month{static_cast<unsigned int>(mon)}, day{static_cast<unsigned int>(d)}};
-            cout << ymd << "\n";
-        }
-    }
-}
+//
+//void test_22_2()
+//{
+//    std::regex r{R"(([0-9]{4})-(0?[1-9]|1[0-2])-(0?[1-9]|[1-2][0-9]|3[0-1]))"};
+//    while (true)
+//    {
+//        string str;
+//        if (!std::getline(cin, str) || str[0] == 'q')
+//            break;
+//        if (std::smatch m; std::regex_match(str, m, r))
+//        {
+//            int y, mon, d;
+//            y = std::stoi(m[1].str());
+//            mon = std::stoi(m[2].str());
+//            d = std::stoi(m[3].str());
+//            year_month_day ymd{year{y}, month{static_cast<unsigned int>(mon)}, day{static_cast<unsigned int>(d)}};
+//            cout << ymd << "\n";
+//        }
+//    }
+//}
 
 void test_22_3()
 {
@@ -195,35 +195,35 @@ void test_22_3()
     cout << d.count() << " days" << endl;
 }
 
-void test_22_4()
-{
-    year_month_day ymd{2020y / June / 22d};
-    year_month_weekday ymwd{ymd};
-    if (ymwd.ok())
-    {
-        cout << ymwd.weekday() << endl;
-    }
-    else
-        cout << "the day is invalid" << endl;
-}
+//void test_22_4()
+//{
+//    year_month_day ymd{2020y / June / 22d};
+//    year_month_weekday ymwd{ymd};
+//    if (ymwd.ok())
+//    {
+//        cout << ymwd.weekday() << endl;
+//    }
+//    else
+//        cout << "the day is invalid" << endl;
+//}
 
-void test_22_5()
-{
-//    2023-08-12 20:21:35 UTC
-    auto utc = sys_days{2023y / August / 12d} + 20h + 21min + 35s;
-    auto tokyo = locate_zone("Asia/Tokyo");
-    auto york = locate_zone("America/New_York");
-    auto gmt = locate_zone("GMT");
-    auto tokyo_t = tokyo->to_local(utc);
-    auto york_t = york->to_local(utc);
-    auto gmt_t = gmt->to_local(utc);
-    cout << "tokyo time: " << tokyo_t << endl;
-    cout << "new_york time: " << york_t << endl;
-    cout << "utc time: " << utc << endl;
-    cout << "gmt time: " << gmt_t << endl;
-
-    cout << "utc == gmt ? " << (utc.time_since_epoch() == gmt_t.time_since_epoch()) << endl;
-}
+//void test_22_5()
+//{
+////    2023-08-12 20:21:35 UTC
+//    auto utc = sys_days{2023y / August / 12d} + 20h + 21min + 35s;
+//    auto tokyo = locate_zone("Asia/Tokyo");
+//    auto york = locate_zone("America/New_York");
+//    auto gmt = locate_zone("GMT");
+//    auto tokyo_t = tokyo->to_local(utc);
+//    auto york_t = york->to_local(utc);
+//    auto gmt_t = gmt->to_local(utc);
+//    cout << "tokyo time: " << tokyo_t << endl;
+//    cout << "new_york time: " << york_t << endl;
+//    cout << "utc time: " << utc << endl;
+//    cout << "gmt time: " << gmt_t << endl;
+//
+//    cout << "utc == gmt ? " << (utc.time_since_epoch() == gmt_t.time_since_epoch()) << endl;
+//}
 
 void test_22_6()
 {
@@ -252,15 +252,15 @@ int main()
 {
     dt::test_ratio();
     dt::test_duration();
-    dt::test_clock();
-    dt::test_time_point();
-    dt::test_date();
-    dt::test_time_zone();
-    dt::exercise::test_22_1();
-    dt::exercise::test_22_2();
-    dt::exercise::test_22_3();
-    dt::exercise::test_22_4();
-    dt::exercise::test_22_5();
+//    dt::test_clock();
+//    dt::test_time_point();
+//    dt::test_date();
+//    dt::test_time_zone();
+//    dt::exercise::test_22_1();
+//    dt::exercise::test_22_2();
+//    dt::exercise::test_22_3();
+//    dt::exercise::test_22_4();
+//    dt::exercise::test_22_5();
     dt::exercise::test_22_6();
     return 0;
 }

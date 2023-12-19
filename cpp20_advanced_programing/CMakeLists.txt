@@ -12,7 +12,7 @@ foreach (_v ${src_list})
     endif ()
 endforeach ()
 
-find_package(co_context REQUIRED)
+#find_package(co_context REQUIRED)
 
 
 foreach (_v ${src_list})
@@ -21,16 +21,16 @@ foreach (_v ${src_list})
         add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v} ${target_src_list})
     endif ()
     if (_v MATCHES _coroutine)
-        string(REPLACE .cpp "" _name ${_v})
-        add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v} ${target_src_list})
-        target_link_libraries(${_name}
-                PRIVATE
-                co_context)
-        if (_v MATCHES multi_thread)
-            target_link_directories(${_name}
-                    PRIVATE
-                    Threads::Threads)
-        endif ()
+#        string(REPLACE .cpp "" _name ${_v})
+#        add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v} ${target_src_list})
+#        target_link_libraries(${_name}
+#                PRIVATE
+#                co_context)
+#        if (_v MATCHES multi_thread)
+#            target_link_directories(${_name}
+#                    PRIVATE
+#                    Threads::Threads)
+#        endif ()
     elseif (_v MATCHES part)
         string(REPLACE .cpp "" _name ${_v})
         add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v} ${target_src_list})

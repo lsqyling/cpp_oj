@@ -3,10 +3,12 @@
 #include <iostream>
 #include <cassert>
 #include <array>
+#include <mutex>
+#include <numbers>
 #include "../professional_cpp/format.h"
 
 constexpr int N = 100'0000;
-constinit std::mutex g_mut;
+std::mutex g_mut;
 int x = 0;
 
 
@@ -127,7 +129,7 @@ struct circle : shape
 {
     constexpr circle(double r) : m_r(r) {}
 
-    constexpr double get_area() const override
+    double get_area() const override
     {
         return std::numbers::pi * m_r * m_r;
     }

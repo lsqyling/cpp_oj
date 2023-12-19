@@ -1216,14 +1216,13 @@ void entry()
 }
 
 namespace basic_1026 {
-constexpr int CLK_TCK = 100;
 
 void entry()
 {
     int c1, c2;
     scanf("%d%d", &c1, &c2);
 
-    int total_s = round(1.0 * (c2 - c1) / CLK_TCK);
+    int total_s = round(1.0 * (c2 - c1) / 100);
     int h, m, s;
 
     h = total_s / 3600;

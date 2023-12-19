@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <algorithm>
 #include <cstring>
-#include "../common/CommonHeaders.h"
+#include "CommonHeaders.h"
 
 
 namespace chapter_1_3 {

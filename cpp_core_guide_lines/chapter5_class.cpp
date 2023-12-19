@@ -852,5 +852,4 @@ int main()
     single_sync::test();
     con1::test();
     con2::test();
-    return 0;
 }

@@ -6,7 +6,7 @@
 #include <cassert>
 #include <cstring>
 
-#include "../common/CommonHeaders.h"
+#include "CommonHeaders.h"
 
 namespace math {
 namespace pat_a1069 {

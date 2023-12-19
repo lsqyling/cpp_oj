@@ -2,7 +2,7 @@
 // Created by shiqing on 2021/4/3.
 //
 #include <algorithm>
-#include "../common/CommonHeaders.h"
+#include "CommonHeaders.h"
 
 
 namespace codeup_1918 {

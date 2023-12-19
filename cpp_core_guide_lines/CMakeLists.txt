@@ -12,15 +12,17 @@ foreach (_v ${src_list})
 endforeach ()
 
 
-
+set(target_name)
 
 foreach (_v ${src_list})
     if (_v MATCHES _test.cpp)
         string(REPLACE .cpp "" _name ${_v})
+        list(APPEND target_name ${_name})
         add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v} ${target_src_list})
     endif ()
     if (_v MATCHES chapter)
         string(REPLACE .cpp "" _name ${_v})
+        list(APPEND target_name ${_name})
         add_executable(${_name} ${CMAKE_CURRENT_LIST_DIR}/${_v} ${target_src_list})
         if (_v MATCHES multi_thread)
             target_link_directories(${_name}
@@ -30,4 +32,17 @@ foreach (_v ${src_list})
     endif ()
 endforeach ()
 
+install(TARGETS ${target_name}
+ARCHIVE DESTINATION lib
+RUNTIME DESTINATION bin
+LIBRARY DESTINATION bin)
+
+#install(FILES chapter5_class.h
+#DESTINATION include
+#)
+
+install(FILES README.md
+DESTINATION doc
+)
 unset(target_src_list)
+unset(target_name)

@@ -6,7 +6,7 @@
 #include <random>
 #include <chrono>
 
-#include "../common/CommonHeaders.h"
+#include "CommonHeaders.h"
 
 namespace sort {
 template<typename T, int N>

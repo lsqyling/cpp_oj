@@ -5,7 +5,7 @@
 #include <stack>
 #include <set>
 #include <cstdio>
-#include "../common/CommonHeaders.h"
+#include "CommonHeaders.h"
 #include "../part_1_linear/include/Stack.h"
 #include "../part_1_linear/include/Queue.h"
 
