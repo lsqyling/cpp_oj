@@ -8,6 +8,7 @@
 #include <map>
 #include <cstring>
 #include <cstdio>
+#include <string>
 
 namespace graph_traversal_matrix {
 constexpr int kV = 1000;

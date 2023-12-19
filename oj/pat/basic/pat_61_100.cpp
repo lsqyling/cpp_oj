@@ -510,7 +510,7 @@ void entry()
         }
         printf("\n");
     }
-    printf("%d %d", pss.size(), count);
+    printf("%zu %d", pss.size(), count);
 }
 }
 

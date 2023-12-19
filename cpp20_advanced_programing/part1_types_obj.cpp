@@ -6,6 +6,7 @@
 #include <cmath>
 #include <iterator>
 #include <variant>
+#include <numbers>
 
 using std::endl;
 using std::cout;
@@ -261,7 +262,7 @@ using t5_t = decltype(rrpt);
 template<typename ...Ts>
 void dump()
 {
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
+    std::cout << "dump" << std::endl;
 }
 
 

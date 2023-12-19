@@ -36,7 +36,7 @@ struct children1
 
 struct children2
 {
-    [[no_unique_address]] base b;
+    base b;
     int age;
 };
 
@@ -44,7 +44,7 @@ void test_empty_base_class_optimization()
 {
     static_assert(sizeof(children) == 4);
     static_assert(sizeof(children1) == 8);
-    static_assert(sizeof(children2) == 4);
+    static_assert(sizeof(children2) == 8);
 }
 
 template<typename T>

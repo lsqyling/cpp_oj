@@ -8,7 +8,7 @@ set(CMAKE_CXX_EXTENSIONS ON)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_C_EXTENSIONS ON)
 
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/lib)
@@ -30,7 +30,6 @@ if (NOT CMAKE_BUILD_TYPE)
 endif ()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
-find_package(Threads REQUIRED)
 
 add_subdirectory(oj)
 add_subdirectory(alg_notes)

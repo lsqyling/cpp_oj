@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <utility>
-#include "format.h"
+#include <format>
 
 namespace tc {
 template<typename, int, int> class grid;

@@ -101,10 +101,11 @@ void test_filesystem()
     std::cout << std::format("p6 exists: {}, \np6 regular_file: {},\np6 filesize: {}",
                              dir_entry.exists(), dir_entry.is_regular_file(),
                              dir_entry.file_size()) << std::endl;
+//    MSVC error.
 
-    auto time_point{dir_entry.last_write_time()};
-    time_t tt = ts::system_clock::to_time_t(ts::file_clock::to_sys(time_point));
-    std::cout << std::put_time(std::localtime(&tt), "%b %d %Y %H:%M:%S") << std::endl;
+//    auto time_point{dir_entry.last_write_time()};
+//    time_t tt = ts::system_clock::to_time_t(ts::file_clock::to_utc(time_point));
+//    std::cout << std::put_time(std::localtime(&tt), "%b %d %Y %H:%M:%S") << std::endl;
 };
 
 

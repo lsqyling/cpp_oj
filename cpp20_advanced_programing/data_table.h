@@ -46,8 +46,8 @@ class group_entries_trait<type_list<H, Ts...>, Gs>
 {
     template<KVEntry E>
     using group_prediction = std::bool_constant<H::dim == E::dim
-                                                && sizeof(H::type) == sizeof(E::type)
-                                                && alignof(H::type) == alignof(E::type)>;
+                                                && sizeof(typename H::type) == sizeof(typename E::type)
+                                                && alignof(typename H::type) == alignof(typename E::type)>;
 
     using group = partition_t<type_list<H, Ts...>, group_prediction>;
     using satisfied = typename group::satisfied;

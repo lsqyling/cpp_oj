@@ -800,7 +800,7 @@ void entry()
     table[m] = true;
     table[n] = true;
     memset(row_valid, true, sizeof(row_valid));
-    int data[row][col];
+    std::vector<std::vector<int>> data(row, std::vector<int>(col));
     int x;
     for (int i = 0; i < row; ++i)
     {

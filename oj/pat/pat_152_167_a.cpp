@@ -7,6 +7,7 @@
 #include <set>
 #include <iostream>
 #include <queue>
+#include <string>
 
 namespace pat_a1152 {
 constexpr int N = 1005;
@@ -280,7 +281,7 @@ void entry()
             count.insert(c);
         }
         if (is_k_coloring(colors))
-            printf("%lu-coloring\n", count.size());
+            printf("%zu-coloring\n", count.size());
         else
             printf("No\n");
     }
@@ -718,7 +719,7 @@ void entry()
         string line;
         do
         {
-            getline(std::cin, line);
+            std::getline(std::cin, line);
         } while (line.empty());
 
         int a, b;

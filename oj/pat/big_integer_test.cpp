@@ -1,6 +1,7 @@
 #include <fstream>
 #include <random>
 #include <iostream>
+#include <string>
 
 #include "big_integer.h"
 //4M

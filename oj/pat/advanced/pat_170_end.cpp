@@ -19,7 +19,7 @@ void entry()
 {
     int n, r, k;
     scanf("%d%d%d", &n, &r, &k);
-    pair neighbours[r];
+    pair *neighbours = new pair[r];
     for (int i = 0; i < r; ++i)
     {
         scanf("%d%d", &neighbours[i].first, &neighbours[i].second);
@@ -27,8 +27,8 @@ void entry()
 
     int m;
     scanf("%d", &m);
-    bool table[n+1];
-    int species[n+1];
+    bool *table = new bool[n+1];
+    int *species = new int[n+1];
     for (int j = 0; j < m; ++j)
     {
         memset(table, false, sizeof(table));
@@ -67,6 +67,9 @@ void entry()
                 printf("No\n");
         }
     }
+    delete[] table;
+    delete[] species;
+    delete[] neighbours;
 }
 }
 

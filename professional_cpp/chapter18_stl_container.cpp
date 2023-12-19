@@ -3,6 +3,8 @@
 #include <iostream>
 #include <span>
 #include <map>
+#include <array>
+#include <format>
 #include "format.h"
 #include "bank.h"
 

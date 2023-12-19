@@ -29,7 +29,7 @@ void BubbleSort(T (&arr)[N])
 constexpr double kEps = 1e-8;
 const double kPi = std::acos(-1.0);
 
-constexpr bool Equ(double a, double b)
+bool Equ(double a, double b)
 {
     return std::abs(a - b) < kEps;
 }

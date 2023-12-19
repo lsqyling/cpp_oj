@@ -49,8 +49,7 @@ void filter_out(std::vector<int> &ret)
 {
     int n;
     scanf("%d", &n);
-    bool table[n+1];
-    memset(table, true, sizeof(table));
+    std::vector<bool> table(n+1, true);
     for (int i = 2; i <= n; ++i)
     {
         if (table[i])
@@ -87,7 +86,7 @@ void entry()
     int n, m;
     scanf("%d%d", &n, &m);
     m %= n;
-    int num[n];
+    int *num = new int[n];
     for (int i = 0; i < n; ++i)
     {
         scanf("%d", &num[i]);
@@ -101,6 +100,7 @@ void entry()
             printf(" ");
         printf("%d", num[j]);
     }
+    delete[] num;
 }
 }
 

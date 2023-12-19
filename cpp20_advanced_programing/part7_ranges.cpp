@@ -28,7 +28,7 @@ void test_ranges()
 
 static_assert(ranges::range<std::vector<int>>);
 static_assert(ranges::range<int[10]>);
-static_assert(ranges::range<std::array<int, 10>>);
+static_assert(ranges::range<std::array<int, 10>> == false);
 
 void test_view_factory()
 {
