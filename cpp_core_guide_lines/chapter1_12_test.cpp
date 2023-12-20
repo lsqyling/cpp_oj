@@ -838,14 +838,14 @@ int main()
     double_checked_locking_pattern::test();
     per7::test();
     per11::test();
-//    per19_memory_access::test();
+    per19_memory_access::test();
     cp2::test();
     cp3::test();
     cp7::test();
     cp9::test();
     cp42::test();
     cp32::test();
-//    cp41::test();
+    cp41::test();
     cp44::test();
     parallel::test();
     send_msg_10_4::test();
