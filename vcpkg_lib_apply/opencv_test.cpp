@@ -6,7 +6,7 @@
 
 int main()
 {
-    std::string image_path = "D:\\Users\\10580\\Pictures\\photo\\1V3A8117.JPG";
+    std::string image_path = R"(D:/Users/10580/Pictures/photo/1V3A8117.JPG)";
     cv::Mat img = cv::imread(image_path, cv::IMREAD_COLOR);
 
     imshow("Display window", img);

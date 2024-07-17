@@ -16,8 +16,18 @@ void print_number_limits()
     std::cout << std::format("Max int value: {}\n", std::numeric_limits<int>::max());
     std::cout << std::format("Min int value: {}\n", std::numeric_limits<int>::min());
     std::cout << std::format("Lowest int value: {}\n", std::numeric_limits<int>::lowest());
-    std::cout << "\ndouble:\n";
 
+    std::cout << "\nlong:\n";
+    std::cout << std::format("Max long value: {}\n", std::numeric_limits<long>::max());
+    std::cout << std::format("Min long value: {}\n", std::numeric_limits<long>::min());
+    std::cout << std::format("Lowest long value: {}\n", std::numeric_limits<long>::lowest());
+
+    std::cout << "\nlong long:\n";
+    std::cout << std::format("Max long long value: {}\n", std::numeric_limits<long long>::max());
+    std::cout << std::format("Min long long value: {}\n", std::numeric_limits<long long>::min());
+    std::cout << std::format("Lowest long value: {}\n", std::numeric_limits<long long>::lowest());
+
+    std::cout << "\ndouble:\n";
     std::cout << std::format("Max double value: {}\n", std::numeric_limits<double>::max());
     std::cout << std::format("Min double value: {}\n", std::numeric_limits<double>::min());
     std::cout << std::format("Lowest double value: {}\n", std::numeric_limits<double>::lowest());
@@ -45,7 +55,7 @@ void three_ways_compare_operator()
 
 int add_numbers(int a, int b)
 {
-    std::cout << std::format("Entering function {}", __func__) << std::endl;
+    std::cout << std::format("Entering function name \"{}\"", __func__) << std::endl;
     return a + b;
 }
 
@@ -78,6 +88,23 @@ void init_employee()
 }
 }
 
+namespace pro::test::literals {
+void print_number()
+{
+    constexpr double pi = 3.14159;
+    int i = 123;
+    int j = 0173;
+    int k = 0x7B;
+    int m = 0b11110111011;
+    std::cout << std::format("i = {:#d}, {:#B}, {:#o}, {:#x}", i, i, i, i) << std::endl;
+    std::cout << std::format("j = {:#d}, {:#B}, {:#o}, {:#x}", j, j, j, j) << std::endl;
+    std::cout << std::format("k = {:#d}, {:#B}, {:#o}, {:#x}", k, k, k, k) << std::endl;
+    std::cout << std::format("m = {:#d}, {:#B}, {:#o}, {:#x}", m, m, m, m) << std::endl;
+    std::cout << std::format("m = {:#d}, {:#B}, {:#o}, {:#x}", m, m, m, m) << std::endl;
+    std::cout << std::format("pi = {:f}", pi) << std::endl;
+}
+}
+
 
 
 
@@ -94,5 +121,6 @@ int main(int argc, char *argv[])
     pro::test::hello::three_ways_compare_operator();
     pro::test::hello::test_add_two_numbers();
     pro::test::hello::init_employee();
+    pro::test::literals::print_number();
     return 0;
 }

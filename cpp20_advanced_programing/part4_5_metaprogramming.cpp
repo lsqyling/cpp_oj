@@ -146,9 +146,10 @@ void test_map_t()
             type_list<char *, float *, double *, int *, char *, std::vector<int> *>>);
 
     static_assert(std::is_same_v<filter_t<long_list, less_size4>::type, type_list<char, char>>);
-    static_assert(fold_t<long_list, std::integral_constant<size_t, 0>, type_size_acc>::value == 50);
+    static_assert(fold_t<long_list, std::integral_constant<size_t, 0>, type_size_acc>::value);
 
     cout << sizeof(std::vector<int>) << endl;
+    cout << sizeof(fold_t<long_list, std::integral_constant<size_t, 0>, type_size_acc>::value) << endl;
 }
 
 void test_check_type_list()

@@ -45,6 +45,9 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 cmake-build-debug/
+bin/
+lib/
+install/
 
 # Visual Studio Code
 .vscode/*

@@ -21,7 +21,7 @@ void test_extract_extensions()
 }
 
 
-void  test_format()
+void test_format()
 {
     int i = 42;
 
@@ -54,7 +54,7 @@ void  test_format()
     std::cout << std::format("|{:#10o}|", i) << std::endl;
     std::cout << std::format("|{:10o}|", i) << std::endl;
 
-    double d = 3.1415/2.3;
+    double d = 3.1415 / 2.3;
     std::cout << "Precision: ------------" << std::endl;
     std::cout << std::format("|{:12g}|", d) << std::endl;
     std::cout << std::format("|{:12.2}|", d) << std::endl;
@@ -72,6 +72,7 @@ void  test_format()
     std::cout << std::format("|{:+#06X}|", -i) << std::endl;
 }
 }
+
 
 
 int main()

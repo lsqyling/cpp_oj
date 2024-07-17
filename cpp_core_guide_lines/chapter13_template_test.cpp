@@ -2,6 +2,8 @@
 #include <iostream>
 #include <algorithm>
 #include <concepts>
+#include <future>
+
 namespace t40 {
 class sum_me
 {
@@ -103,6 +105,113 @@ void test()
 }
 }
 
+namespace t62 {
+class array_base
+{
+public:
+    array_base(std::size_t n) : size_(n) {}
+    std::size_t get_size() const { return size_; }
+private:
+    std::size_t size_;
+};
+
+template<typename T, size_t N>
+class array : private array_base
+{
+public:
+    array() : array_base(N) {}
+    size_t get_size() const { return array_base::get_size(); }
+private:
+    T data_[N];
+};
+
+
+void test()
+{
+    array<int, 100> arr1;
+    array<double, 200> arr2;
+    std::cout << "arr1.get_size(): " << arr1.get_size() << '\n';
+    std::cout << "arr2.get_size(): " << arr2.get_size() << '\n';
+}
+
+
+class account
+{
+    friend bool operator<(const account &a, const account &b);
+
+public:
+    account() = default;
+    account(double b) : balance_(b) {}
+private:
+    double balance_{0.0};
+};
+
+bool operator<(const account &a, const account &b)
+{
+    return a.balance_ < b.balance_;
+}
+
+
+class shape
+{
+public:
+    template<class T>
+           /* virtual */void intersect(T *p) {}
+};
+
+
+void test_virtual_func_template()
+{
+    shape shape_;
+}
+
+}
+
+namespace lambda {
+
+void test_value_ref()
+{
+    std::cout << std::endl;
+    std::cout << std::endl;
+    int x = 5, y = 8;
+    auto foo = [x, &y]() mutable {
+        x += 1;
+        y += 2;
+        std::cout << "lambda x = " << x << ", y = " << y << std::endl;
+        return x * y;
+    };
+
+    x = 9;
+    y = 20;
+    foo();
+    std::cout << "call1  x = " << x << ", y = " << y << std::endl;
+//    foo();
+//    std::cout << "call2  x = " << x << ", y = " << y << std::endl;
+}
+
+class work
+{
+public:
+    work() : value_(42) {}
+    std::future<int> spawn()
+    {
+        int x = 3;
+        int y = 4;
+        return std::async([=, this]() { return value_ * x * y; });
+    }
+
+private:
+    int value_;
+};
+
+
+
+
+
+
+
+}
+
 
 
 
@@ -128,5 +237,8 @@ int main()
     t44::test();
     t46::test();
     t48::test();
+    t62::test();
+    t62::test_virtual_func_template();
+    lambda::test_value_ref();
     return 0;
 }
