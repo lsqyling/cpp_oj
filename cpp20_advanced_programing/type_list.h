@@ -176,8 +176,5 @@ template<TL A, TL B, template<typename, typename> class Pair>
 using cross_product_t = cross_product<A, B, Pair>::type;
 static_assert(cross_product_t<long_list, long_list, std::pair>::size ==
               long_list::size * long_list::size);
-
-
-
 }
 #endif

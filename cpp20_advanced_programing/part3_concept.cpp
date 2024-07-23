@@ -18,14 +18,16 @@ template<typename... Ts>
 concept S = (integral<typename Ts::type> || ...);
 
 template<typename M>
-concept Machine = requires(M m)
+concept Machine =
+requires(M m)
 {
     m.power_up();
     m.power_down();
 };
 
 template<typename T>
-concept Animal = requires(T animal)
+concept Animal =
+requires(T animal)
 {
     play(animal);
     T::count;
@@ -33,14 +35,16 @@ concept Animal = requires(T animal)
 };
 
 template<typename T>
-concept Number = requires(T a, T b, T c)
+concept Number =
+requires(T a, T b, T c)
 {
     a == b;
     a + b * c;
 };
 
 template<typename T>
-concept CT = requires
+concept CT =
+requires
 {
     typename T::type;
     typename std::vector<T>;
@@ -54,7 +58,7 @@ struct foo1
 void test_simple_concept()
 {
     static_assert(std::floating_point<float>);
-    static_assert(!std::floating_point<int>);
+    static_assert(!std::floating_point<int>, "Unable to satisfy constraints");
     static_assert(foo<int>);
     static_assert(integral<int>);
     static_assert(C<double>);
@@ -62,14 +66,16 @@ void test_simple_concept()
 }
 
 template<typename T>
-concept C1 = requires(T x)
+concept C1 =
+requires(T x)
 {
     { f(x) } -> std::same_as<T>;
     { g(x) } -> std::convertible_to<double>;
 };
 
 template<typename T>
-concept C2 = requires(T x)
+concept C2 =
+requires(T x)
 {
     f(x);
     requires std::same_as<T, decltype(f(x))>;
@@ -78,17 +84,20 @@ concept C2 = requires(T x)
 };
 
 template<typename T>
-concept C3 = requires
+concept C3 =
+requires
 {
     requires sizeof(T) > sizeof(void *);
     requires std::is_trivial_v<T>;
 };
 
 template<typename T>
-constexpr bool has_member_swap = requires(T a, T b) { a.swap(b); };
+constexpr bool has_member_swap =
+        requires(T a, T b) { a.swap(b); };
 
 template<size_t N>
-concept even = requires {
+concept even =
+requires {
     requires N % 2 == 0;
 };
 
@@ -157,7 +166,10 @@ void calculate(const T &, const U &)
 }
 
 template<typename T, typename U>
-requires (Scalar<T> && Scalar<U>) || (CustomMath<T> && CustomMath<U>)
+requires (Scalar<T> && Scalar<U>) || (
+CustomMath<T> &&CustomMath<U>
+)
+
 void calculate(const T &, const U &)
 {
     cout << "P" << endl;
@@ -194,10 +206,33 @@ void test_convertible_from_to()
 }
 
 template<typename F, typename ...Args>
-concept invocable = requires(F &&f, Args &&...args)
+concept invocable =
+requires(F &&f, Args &&...args)
 {
     invoke(std::forward<F>(f), std::forward<Args>(args)...);
 };
+}
+
+namespace concept_requires {
+template<typename T>
+struct wrapper
+{
+    T value;
+    void operator()()
+    requires std::is_invocable_v<T>
+    {value(); }
+
+    void reset(T v) { value = v; }
+};
+
+template struct wrapper<int>;
+
+void test_wrapper()
+{
+    wrapper<int> wi{};
+}
+
+
 
 
 
@@ -206,7 +241,6 @@ concept invocable = requires(F &&f, Args &&...args)
 
 
 }
-
 
 
 
